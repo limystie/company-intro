@@ -43,44 +43,44 @@ const BrandsView = ({ onClose }) => {
                     
                     {/* Col 1: Flextron */}
                     <div className="glass-panel" style={{ position: 'relative', overflow: 'hidden', background: '#f8fafc', minHeight: '280px', padding: '4rem 1.5rem 2rem 1.5rem', borderRadius: '8px', color: '#333', border: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }}>
-                        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'url(/images/materials/conductive_fabric.png)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.5, mixBlendMode: 'multiply', WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 10%, rgba(0,0,0,1) 90%)', maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 10%, rgba(0,0,0,1) 90%)' }} />
+                        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'url(/longyoung-profile/images/materials/conductive_fabric.png)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.5, mixBlendMode: 'multiply', WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 10%, rgba(0,0,0,1) 90%)', maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 10%, rgba(0,0,0,1) 90%)' }} />
                         <div style={{ position: 'relative', zIndex: 1, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                             <h4 style={{ textAlign: 'center', marginBottom: '2rem', fontSize: '0.85rem', fontWeight: '600', color: '#475569', letterSpacing: '2px', textTransform: 'uppercase' }}>EMC Materials</h4>
                             <div style={{ textAlign: 'center', width: '100%', height: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <img src="/images/brands/Flextron.png" alt="Flextron" style={{ height: '100%', objectFit: 'contain' }} />
+                                <img src="/longyoung-profile/images/brands/Flextron.png" alt="Flextron" style={{ height: '100%', objectFit: 'contain' }} />
                             </div>
                         </div>
                     </div>
 
                     {/* Col 2: futherma */}
                     <div className="glass-panel" style={{ position: 'relative', overflow: 'hidden', background: '#f8fafc', minHeight: '280px', padding: '4rem 1.5rem 2rem 1.5rem', borderRadius: '8px', color: '#333', border: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }}>
-                        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'url(/images/materials/thermal_pad.png)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.5, mixBlendMode: 'multiply', WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 10%, rgba(0,0,0,1) 90%)', maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 10%, rgba(0,0,0,1) 90%)' }} />
+                        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'url(/longyoung-profile/images/materials/thermal_pad.png)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.5, mixBlendMode: 'multiply', WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 10%, rgba(0,0,0,1) 90%)', maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 10%, rgba(0,0,0,1) 90%)' }} />
                         <div style={{ position: 'relative', zIndex: 1, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                             <h4 style={{ textAlign: 'center', marginBottom: '2rem', fontSize: '0.85rem', fontWeight: '600', color: '#475569', letterSpacing: '2px', textTransform: 'uppercase' }}>Thermal Materials</h4>
                             <div style={{ textAlign: 'center', width: '100%', height: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <img src="/images/brands/futherma.png" alt="futherma" style={{ height: '100%', objectFit: 'contain' }} />
+                                <img src="/longyoung-profile/images/brands/futherma.png" alt="futherma" style={{ height: '100%', objectFit: 'contain' }} />
                             </div>
                         </div>
                     </div>
 
                     {/* Col 3: Dwell */}
                     <div className="glass-panel" style={{ position: 'relative', overflow: 'hidden', background: '#f8fafc', minHeight: '280px', padding: '4rem 1.5rem 2rem 1.5rem', borderRadius: '8px', color: '#333', border: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }}>
-                        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'url(/images/materials/transparent_tape.png)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.5, mixBlendMode: 'multiply', WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 10%, rgba(0,0,0,1) 90%)', maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 10%, rgba(0,0,0,1) 90%)' }} />
+                        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'url(/longyoung-profile/images/materials/transparent_tape.png)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.5, mixBlendMode: 'multiply', WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 10%, rgba(0,0,0,1) 90%)', maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 10%, rgba(0,0,0,1) 90%)' }} />
                         <div style={{ position: 'relative', zIndex: 1, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                             <h4 style={{ textAlign: 'center', marginBottom: '2rem', fontSize: '0.85rem', fontWeight: '600', color: '#475569', letterSpacing: '2px', textTransform: 'uppercase' }}>Bonding Materials</h4>
                             <div style={{ textAlign: 'center', width: '100%', height: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <img src="/images/brands/DWELL logo.png" alt="Dwell" style={{ height: '100%', objectFit: 'contain' }} />
+                                <img src="/longyoung-profile/images/brands/DWELL logo.png" alt="Dwell" style={{ height: '100%', objectFit: 'contain' }} />
                             </div>
                         </div>
                     </div>
 
                     {/* Col 4: GHZ */}
                     <div className="glass-panel" style={{ position: 'relative', overflow: 'hidden', background: '#f8fafc', minHeight: '280px', padding: '4rem 1.5rem 2rem 1.5rem', borderRadius: '8px', color: '#333', border: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }}>
-                        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'url(/images/materials/copper_foil.png)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.5, mixBlendMode: 'multiply', WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 10%, rgba(0,0,0,1) 90%)', maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 10%, rgba(0,0,0,1) 90%)' }} />
+                        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'url(/longyoung-profile/images/materials/copper_foil.png)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.5, mixBlendMode: 'multiply', WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 10%, rgba(0,0,0,1) 90%)', maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 10%, rgba(0,0,0,1) 90%)' }} />
                         <div style={{ position: 'relative', zIndex: 1, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                             <h4 style={{ textAlign: 'center', marginBottom: '2rem', fontSize: '0.85rem', fontWeight: '600', color: '#475569', letterSpacing: '2px', textTransform: 'uppercase' }}>Composite Copper</h4>
                             <div style={{ textAlign: 'center', width: '100%', height: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <img src="/images/brands/GHZ logo.png" alt="GHZ" style={{ height: '100%', objectFit: 'contain' }} />
+                                <img src="/longyoung-profile/images/brands/GHZ logo.png" alt="GHZ" style={{ height: '100%', objectFit: 'contain' }} />
                             </div>
                         </div>
                     </div>
@@ -89,7 +89,7 @@ const BrandsView = ({ onClose }) => {
                 {/* Bottom Row: LONG YOUNG ELECTRONICS */}
                 <div className="glass-panel" style={{ background: '#f8fafc', padding: '2rem 3rem', borderRadius: '8px', color: '#333', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div style={{ display: 'flex', alignItems: 'center', height: '60px' }}>
-                        <img src="/images/brands/LY LOGO英文.png" alt="Long Young Electronics" style={{ maxHeight: '100%', objectFit: 'contain' }} />
+                        <img src="/longyoung-profile/images/brands/LY LOGO英文.png" alt="Long Young Electronics" style={{ maxHeight: '100%', objectFit: 'contain' }} />
                     </div>
                     <div style={{ fontWeight: 'bold', fontSize: '1.15rem' }}>
                         Composite Materials + Precise Die-cut + Functional Design Solutions

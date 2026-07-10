@@ -1,0 +1,56 @@
+#!/usr/bin/expect -f
+
+set timeout 120
+set ip "43.173.100.169"
+set user "ubuntu"
+set password "wahaha@18"
+
+puts "Step 1: Installing Nginx on remote server..."
+spawn ssh -o StrictHostKeyChecking=no $user@$ip "sudo apt-get update && sudo apt-get install -y nginx && sudo mkdir -p /var/www/html && sudo chown -R ubuntu:ubuntu /var/www/html"
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    "\\\[sudo\\\] password for ubuntu:" {
+        send "$password\r"
+        exp_continue
+    }
+    timeout {
+        puts "Timeout installing Nginx"
+        exit 1
+    }
+    eof
+}
+
+puts "Step 2: Uploading website files..."
+spawn scp -o StrictHostKeyChecking=no -r dist/assets dist/index.html $user@$ip:/var/www/html/
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    timeout {
+        puts "Timeout uploading files"
+        exit 1
+    }
+    eof
+}
+
+puts "Step 3: Restarting Nginx..."
+spawn ssh -o StrictHostKeyChecking=no $user@$ip "sudo systemctl restart nginx"
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    "\\\[sudo\\\] password for ubuntu:" {
+        send "$password\r"
+        exp_continue
+    }
+    timeout {
+        puts "Timeout restarting Nginx"
+        exit 1
+    }
+    eof
+}

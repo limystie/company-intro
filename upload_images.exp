@@ -1,0 +1,22 @@
+#!/usr/bin/expect -f
+
+set timeout 300
+set ip "43.173.100.169"
+set user "ubuntu"
+set password "wahaha@18"
+
+puts "Uploading all website files (including images)..."
+spawn scp -o StrictHostKeyChecking=no -r dist/. $user@$ip:/var/www/html/
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    timeout {
+        puts "Timeout uploading files"
+        exit 1
+    }
+    eof
+}
+
+puts "Done!"

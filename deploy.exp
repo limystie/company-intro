@@ -1,0 +1,25 @@
+#!/usr/bin/expect -f
+
+set timeout 30
+set ip "43.173.100.169"
+set user "ubuntu"
+set password "wahaha@18"
+set dir "/var/www/html"
+
+spawn scp -o StrictHostKeyChecking=no -r dist/assets dist/index.html $user@$ip:$dir
+
+expect {
+    "yes/no" {
+        send "yes\r"
+        exp_continue
+    }
+    "password:" {
+        send "$password\r"
+    }
+    timeout {
+        puts "Connection timed out"
+        exit 1
+    }
+}
+
+expect eof
