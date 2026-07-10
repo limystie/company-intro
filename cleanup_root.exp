@@ -1,0 +1,26 @@
+#!/usr/bin/expect -f
+
+set timeout 30
+set ip "43.173.100.169"
+set user "ubuntu"
+set password "wahaha@18"
+
+puts "Cleaning up root directory..."
+spawn ssh -o StrictHostKeyChecking=no $user@$ip "sudo find /var/www/html -maxdepth 1 -mindepth 1 ! -name 'longyoung-profile' -exec rm -rf {} +"
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    "\\\[sudo\\\] password for ubuntu:" {
+        send "$password\r"
+        exp_continue
+    }
+    timeout {
+        puts "Timeout executing cleanup"
+        exit 1
+    }
+    eof
+}
+
+puts "Done!"
