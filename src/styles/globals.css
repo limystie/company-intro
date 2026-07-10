@@ -4,6 +4,8 @@
   --brand-primary-rgb: 7, 39, 126;
   --brand-secondary: #00d4ff; /* Cyan accent for high tech feel */
   
+  --brand-tertiary: #b534ff; /* Neon purple for lively tech vibe */
+  
   /* Dark Theme Colors */
   --bg-color: #030816; /* Deep dark blue for background */
   --bg-color-rgb: 3, 8, 22;
@@ -65,7 +67,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .text-gradient {
-  background: linear-gradient(90deg, #ffffff, var(--brand-secondary));
+  background: linear-gradient(90deg, var(--brand-secondary), var(--brand-tertiary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
