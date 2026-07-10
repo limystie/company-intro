@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAppStore } from '../store/useAppStore';
 import * as LucideIcons from 'lucide-react';
 import DottedMap from '../components/DottedMap';
+import LocationsGlobeView from '../components/LocationsGlobeView';
+import BrandsView from '../components/BrandsView';
 
 const historyData = [
     { year: '2000', event: 'Company Foundation', desc: 'Established the core business and vision.', status: 'COMPLETED' },
@@ -56,12 +58,24 @@ const AnimatedCounter = ({ value }) => {
 
 const HomeView = () => {
     const { fetchHomeData, snapshot, advantages, services, isLoading, error } = useAppStore();
-    const [activeSection, setActiveSection] = useState(null);
+    const [activeSection, setActiveSection] = useState(() => sessionStorage.getItem('home_activeSection') || null);
     const [transitionKey, setTransitionKey] = useState(0);
-    const [showHistory, setShowHistory] = useState(false);
-    const [showPartners, setShowPartners] = useState(false);
+    const [showHistory, setShowHistory] = useState(() => sessionStorage.getItem('home_showHistory') === 'true');
+    const [showPartners, setShowPartners] = useState(() => sessionStorage.getItem('home_showPartners') === 'true');
+    const [showLocations, setShowLocations] = useState(() => sessionStorage.getItem('home_showLocations') === 'true');
+    const [showBrands, setShowBrands] = useState(() => sessionStorage.getItem('home_showBrands') === 'true');
     const [activeIndustry, setActiveIndustry] = useState('All');
     const [activeRole, setActiveRole] = useState('All');
+
+    useEffect(() => {
+        if (activeSection) sessionStorage.setItem('home_activeSection', activeSection);
+        else sessionStorage.removeItem('home_activeSection');
+    }, [activeSection]);
+
+    useEffect(() => { sessionStorage.setItem('home_showHistory', showHistory); }, [showHistory]);
+    useEffect(() => { sessionStorage.setItem('home_showPartners', showPartners); }, [showPartners]);
+    useEffect(() => { sessionStorage.setItem('home_showLocations', showLocations); }, [showLocations]);
+    useEffect(() => { sessionStorage.setItem('home_showBrands', showBrands); }, [showBrands]);
 
     const filteredPartners = mockPartners.filter(p => {
         const matchIndustry = activeIndustry === 'All' || p.industry === activeIndustry;
@@ -104,6 +118,7 @@ const HomeView = () => {
                 transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
             }}>
                 <DottedMap />
+
 
                 {/* SVG Filter for Pixel Decomposition Glitch */}
                 <svg style={{ position: 'absolute', width: 0, height: 0, pointerEvents: 'none' }}>
@@ -157,9 +172,10 @@ const HomeView = () => {
                                 animate={{ opacity: 1, height: 'auto', marginBottom: '2rem' }}
                                 exit={{ opacity: 0, height: 0, marginBottom: 0 }}
                                 transition={{ duration: 0.4 }}
-                                style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', maxWidth: '600px', overflow: 'hidden' }}
+                                style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', maxWidth: '600px', overflow: 'hidden', fontWeight: 'bold', letterSpacing: '2px', textAlign: 'center', lineHeight: 1.6 }}
                             >
-                                Provide Functional Solution to accelerate the design process and the growth of technology for the safety and good of humankind.
+                                LONGYOUNG ELECTRONICS COMPANY PROFILE<br />
+                                <span style={{ fontSize: '1rem', fontWeight: 'normal', opacity: 0.8, letterSpacing: '4px' }}>2026</span>
                             </motion.p>
                         )}
                     </AnimatePresence>
@@ -183,33 +199,33 @@ const HomeView = () => {
                                     onClick={() => handleSectionClick(sectionKey)}
                                     whileHover={{ 
                                         y: -3,
-                                        backgroundColor: activeSection === sectionKey ? undefined : 'rgba(0, 198, 255, 0.1)',
+                                        backgroundColor: activeSection === sectionKey ? 'var(--accent-primary)' : 'var(--bg-glass-light)',
                                         borderRadius: '50px',
-                                        textShadow: '0 0 10px rgba(0, 198, 255, 0.8)'
+                                        textShadow: 'var(--accent-glow)'
                                     }}
                                     transition={{ type: 'spring', stiffness: 400, damping: 17 }}
                                     style={{ 
                                         position: 'relative',
                                         padding: isExpanded ? '1rem 1rem 1rem 2rem' : '0.8rem 2rem', 
                                         fontSize: '0.85rem', 
-                                        color: activeSection === sectionKey ? '#ffffff' : 'rgba(255,255,255,0.85)', 
+                                        color: activeSection === sectionKey ? '#ffffff' : 'var(--text-secondary)', 
                                         cursor: 'pointer', 
-                                        background: activeSection === sectionKey ? 'linear-gradient(90deg, rgba(0,198,255,0.1) 0%, rgba(0,198,255,0) 100%)' : 'transparent', 
+                                        backgroundColor: activeSection === sectionKey ? 'var(--accent-primary)' : 'var(--bg-glass-card)', 
                                         border: 'none', 
-                                        borderLeft: activeSection === sectionKey ? '3px solid #00C6FF' : '1px solid rgba(255,255,255,0.2)',
+                                        borderLeft: activeSection === sectionKey ? 'none' : '1px solid var(--border-strong)',
+                                        borderRadius: '50px',
                                         textAlign: isExpanded ? 'left' : 'center',
                                         width: isExpanded ? '100%' : 'auto',
                                         fontFamily: 'monospace',
                                         letterSpacing: '1px',
                                         display: 'flex',
                                         alignItems: 'center',
-                                        gap: '1rem',
-                                        textShadow: '0 2px 4px rgba(0,0,0,0.8)'
+                                        boxShadow: activeSection === sectionKey ? '0 10px 25px rgba(25, 101, 163, 0.4)' : 'none',
                                     }}>
-                                    <span style={{ color: activeSection === sectionKey ? '#00C6FF' : 'rgba(255,255,255,0.5)', transition: 'color 0.3s' }}>0{idx + 1} //</span>
-                                    <span style={{ fontWeight: activeSection === sectionKey ? '700' : '500', textShadow: activeSection === sectionKey ? '0 0 10px rgba(0,198,255,0.5)' : '0 2px 4px rgba(0,0,0,0.8)', letterSpacing: '2px', transition: 'all 0.3s' }}>{labels[sectionKey].toUpperCase()}</span>
+                                    <span style={{ color: activeSection === sectionKey ? '#ffffff' : 'var(--text-secondary)', transition: 'color 0.3s', opacity: activeSection === sectionKey ? 0.9 : 1 }}>0{idx + 1} //</span>
+                                    <span style={{ color: activeSection === sectionKey ? '#ffffff' : 'var(--text-primary)', fontWeight: activeSection === sectionKey ? '700' : '500', letterSpacing: '2px', transition: 'all 0.3s' }}>{labels[sectionKey].toUpperCase()}</span>
                                     {activeSection === sectionKey && (
-                                        <motion.div layoutId="navIndicator" style={{ position: 'absolute', left: '-5px', top: '50%', translateY: '-50%', width: '7px', height: '7px', backgroundColor: '#00C6FF', borderRadius: '50%', boxShadow: '0 0 10px #00C6FF' }} />
+                                        <motion.div layoutId="navIndicator" style={{ position: 'absolute', right: '15px', top: '50%', translateY: '-50%', width: '8px', height: '8px', backgroundColor: '#ffffff', borderRadius: '50%', boxShadow: '0 0 10px rgba(255,255,255,0.8)' }} />
                                     )}
                                 </motion.button>
                             );
@@ -224,14 +240,14 @@ const HomeView = () => {
                                 animate={{ opacity: 1, y: 0, height: 'auto' }}
                                 exit={{ opacity: 0, y: 20, height: 0 }}
                                 transition={{ duration: 0.4 }}
-                                style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden' }}
+                                style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap', justifyContent: 'center', overflow: 'visible', padding: '1rem' }}
                             >
                                 {services.map((service) => {
                                     const IconComponent = LucideIcons[service.icon] || LucideIcons.Circle;
                                     return (
                                         <div key={service.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.8rem', cursor: 'pointer' }} className="service-icon-group">
-                                            <div className="glass-panel" style={{ padding: '1.2rem', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease' }}>
-                                                <IconComponent size={28} color="var(--brand-secondary)" />
+                                            <div className="service-icon-circle">
+                                                <IconComponent size={28} color="currentColor" />
                                             </div>
                                             <span style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', letterSpacing: '1px', textTransform: 'uppercase', fontWeight: 500 }}>{service.name}</span>
                                         </div>
@@ -260,7 +276,7 @@ const HomeView = () => {
                                     style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', gap: '5rem', padding: '0 2rem 2rem' }}
                                 >
                                     <AnimatePresence mode="wait">
-                                        {!showHistory && !showPartners ? (
+                                        {!showHistory && !showPartners && !showLocations && !showBrands ? (
                                             <motion.div 
                                                 key="snapshot-grid"
                                                 initial={{ opacity: 0, y: 20 }}
@@ -269,39 +285,51 @@ const HomeView = () => {
                                                 transition={{ duration: 0.4 }}
                                                 style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem', width: '100%' }}
                                             >
+
                                                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem', width: '100%', maxWidth: '1100px', margin: '0 auto' }}>
                                                     {[
                                                         { num: '26', label: 'Years of Experience', sysId: '0x8F22A', isExp: true },
                                                         { num: '986', label: 'Global Partners', sysId: '0xB719C' },
                                                         { num: '11', label: 'Worldwide Locations', sysId: '0xC499D' },
                                                         { num: '5', label: 'Brands', sysId: '0x1A44E' }
-                                                    ].map((item, idx) => (
+                                                    ].map((item, idx) => {
+                                                        const getLayoutIdPrefix = () => {
+                                                            if(item.isExp) return 'experience';
+                                                            if(item.label === 'Global Partners') return 'partners';
+                                                            if(item.label === 'Worldwide Locations') return 'locations';
+                                                            if(item.label === 'Brands') return 'brands';
+                                                            return undefined;
+                                                        };
+                                                        const prefix = getLayoutIdPrefix();
+                                                        return (
                                                         <motion.div 
                                                             key={idx}
-                                                            layoutId={item.isExp ? "experience-card" : (item.label === 'Global Partners' ? 'partners-card' : undefined)}
+                                                            layoutId={prefix ? `${prefix}-card` : undefined}
                                                             onClick={() => { 
                                                                 if (item.isExp) setShowHistory(true); 
                                                                 if (item.label === 'Global Partners') setShowPartners(true);
+                                                                if (item.label === 'Worldwide Locations') setShowLocations(true);
+                                                                if (item.label === 'Brands') setShowBrands(true);
                                                             }}
-                                                            whileHover={{ y: -10, scale: 1.03, boxShadow: '0 15px 40px rgba(181, 52, 255, 0.4)', borderTop: '3px solid #b534ff' }}
-                                                            className="glass-panel" 
+                                                            whileHover={{ y: -10, scale: 1.03, boxShadow: 'var(--accent-glow-strong)', borderTop: '3px solid var(--accent-primary)' }}
+                                                            className="glass-panel snapshot-card" 
                                                             style={{ 
                                                                 padding: '3.5rem 1rem 2.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', 
-                                                                position: 'relative', overflow: 'hidden', border: '1px solid rgba(0, 198, 255, 0.2)', borderTop: '3px solid rgba(0, 198, 255, 0.8)', 
-                                                                background: 'linear-gradient(135deg, rgba(3,8,22,0.8), rgba(40, 10, 60, 0.5))', clipPath: 'polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px)',
-                                                                cursor: (item.isExp || item.label === 'Global Partners') ? 'pointer' : 'default'
+                                                                position: 'relative', overflow: 'hidden', border: '1px solid var(--color-shadow)', borderTop: '3px solid var(--color-shadow)', 
+                                                                background: 'var(--bg-glass-card)', clipPath: 'polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px)',
+                                                                cursor: prefix ? 'pointer' : 'default'
                                                             }}
                                                         >
-                                                            <motion.span layoutId={item.isExp ? "experience-num" : (item.label === 'Global Partners' ? 'partners-num' : undefined)} style={{ fontSize: '4.5rem', fontWeight: '900', zIndex: 1, color: '#ffffff', textShadow: '0 0 25px rgba(0, 198, 255, 0.8), 0 0 5px rgba(255, 255, 255, 0.5)', lineHeight: 1, fontFamily: 'monospace' }}>
-                                                                {(item.isExp || item.label === 'Global Partners') ? item.num : <AnimatedCounter value={item.num} />}
+                                                            <motion.span className="snapshot-num" layoutId={prefix ? `${prefix}-num` : undefined} style={{ fontSize: '4.5rem', fontWeight: '900', zIndex: 1, textShadow: 'var(--accent-glow-strong)', lineHeight: 1, fontFamily: 'monospace' }}>
+                                                                {prefix ? item.num : <AnimatedCounter value={item.num} />}
                                                             </motion.span>
                                                             <div style={{ marginTop: '1.5rem', display: 'flex', alignItems: 'center', gap: '10px', zIndex: 1 }}>
-                                                                <span style={{ color: 'rgba(0, 198, 255, 0.5)' }}>[</span>
-                                                                <motion.span layoutId={item.isExp ? "experience-label" : (item.label === 'Global Partners' ? 'partners-label' : undefined)} style={{ color: 'rgba(255,255,255,0.9)', fontSize: '0.9rem', letterSpacing: '3px', textTransform: 'uppercase', textAlign: 'center', fontWeight: '500' }}>{item.label}</motion.span>
-                                                                <span style={{ color: 'rgba(0, 198, 255, 0.5)' }}>]</span>
+                                                                <span className="snapshot-bracket">[</span>
+                                                                <motion.span className="snapshot-label" layoutId={prefix ? `${prefix}-label` : undefined} style={{ fontSize: '0.9rem', letterSpacing: '3px', textTransform: 'uppercase', textAlign: 'center', fontWeight: '500' }}>{item.label}</motion.span>
+                                                                <span className="snapshot-bracket">]</span>
                                                             </div>
                                                         </motion.div>
-                                                    ))}
+                                                    )})}
                                                 </div>
                                                 
                                                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2rem', width: '100%', maxWidth: '1100px', margin: '1rem auto 0' }}>
@@ -309,23 +337,33 @@ const HomeView = () => {
                                                         { year: '2017', desc: 'IPO in Taiwan', code: 'TW.8499', align: 'left' },
                                                         { year: '2022', desc: 'IPO in Shenzhen', code: 'SZ.301389', align: 'right' }
                                                     ].map((item, idx) => (
-                                                        <motion.div key={idx} whileHover={{ y: -8, scale: 1.02, boxShadow: '0 15px 40px rgba(181, 52, 255, 0.35)', borderColor: 'rgba(181, 52, 255, 0.5)' }} className="glass-panel" 
+                                                        <motion.div key={idx} whileHover={{ y: -8, scale: 1.02, boxShadow: 'var(--accent-glow-strong)', borderColor: 'var(--accent-primary)' }} className="glass-panel" 
                                                             style={{ 
                                                                 padding: '2.5rem 3rem', display: 'flex', flexDirection: item.align === 'left' ? 'row' : 'row-reverse', alignItems: 'center', justifyContent: 'space-between', gap: '2rem', 
-                                                                border: '1px solid rgba(255, 255, 255, 0.05)', borderLeft: item.align === 'left' ? '4px solid rgba(0, 198, 255, 0.8)' : '1px solid rgba(255, 255, 255, 0.05)', borderRight: item.align === 'right' ? '4px solid rgba(0, 198, 255, 0.8)' : '1px solid rgba(255, 255, 255, 0.05)', 
-                                                                background: item.align === 'left' ? 'linear-gradient(90deg, rgba(181, 52, 255, 0.08) 0%, rgba(255,255,255,0) 100%)' : 'linear-gradient(270deg, rgba(181, 52, 255, 0.08) 0%, rgba(255,255,255,0) 100%)', 
+                                                                border: '1px solid var(--border-subtle)', borderLeft: item.align === 'left' ? '4px solid var(--accent-primary)' : '1px solid var(--border-subtle)', borderRight: item.align === 'right' ? '4px solid var(--accent-primary)' : '1px solid var(--border-subtle)', 
+                                                                background: 'var(--bg-glass-card)', 
                                                                 clipPath: item.align === 'left' ? 'polygon(0 0, 100% 0, calc(100% - 20px) 100%, 0 100%)' : 'polygon(20px 0, 100% 0, 100% 100%, 0 100%)', transition: 'all 0.4s ease' 
                                                             }}
                                                         >
-                                                            <span style={{ color: 'white', fontSize: '3.5rem', fontWeight: '900', letterSpacing: '2px', textShadow: '0 0 20px rgba(255,255,255,0.3)', fontFamily: 'monospace' }}><AnimatedCounter value={item.year} /></span>
+                                                            <span style={{ color: 'var(--text-primary)', fontSize: '3.5rem', fontWeight: '900', letterSpacing: '2px', textShadow: '0 0 20px rgba(255,255,255,0.3)', fontFamily: 'monospace' }}><AnimatedCounter value={item.year} /></span>
                                                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: item.align === 'left' ? 'flex-end' : 'flex-start', textAlign: item.align === 'left' ? 'right' : 'left' }}>
-                                                                <span style={{ color: 'rgba(0, 198, 255, 0.9)', fontSize: '1.2rem', fontWeight: '600', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '2px' }}>{item.desc}</span>
-                                                                <span style={{ color: 'rgba(255, 255, 255, 0.4)', fontSize: '1rem', letterSpacing: '3px', fontFamily: 'monospace' }}>{item.code}</span>
+                                                                <span style={{ color: 'var(--accent-primary)', fontSize: '1.2rem', fontWeight: '600', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '2px' }}>{item.desc}</span>
+                                                                <span style={{ color: 'var(--text-muted)', fontSize: '1rem', letterSpacing: '3px', fontFamily: 'monospace' }}>{item.code}</span>
                                                             </div>
                                                         </motion.div>
                                                     ))}
                                                 </div>
+
+                                                <div style={{ width: '100%', maxWidth: '1100px', margin: '2rem auto 0', textAlign: 'center', padding: '1.5rem 2rem' }}>
+                                                    <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', lineHeight: 1.6, letterSpacing: '1px', margin: 0 }}>
+                                                        "Provide Functional Solution to accelerate the design process and the growth of technology for the safety and good of humankind."
+                                                    </p>
+                                                </div>
                                             </motion.div>
+                                        ) : showBrands ? (
+                                            <BrandsView onClose={() => setShowBrands(false)} />
+                                        ) : showLocations ? (
+                                            <LocationsGlobeView onClose={() => setShowLocations(false)} />
                                         ) : showPartners ? (
                                             <motion.div 
                                                 key="snapshot-partners"
@@ -338,26 +376,31 @@ const HomeView = () => {
                                                 {/* Header morphing from card */}
                                                 <motion.div 
                                                     layoutId="partners-card"
-                                                    onClick={() => { setShowPartners(false); setActiveIndustry('All'); setActiveRole('All'); }}
                                                     className="glass-panel"
-                                                    whileHover={{ y: -2, boxShadow: '0 10px 30px rgba(0, 198, 255, 0.1)' }}
+                                                    onClick={() => { 
+                                                        setShowPartners(false);
+                                                        setActiveIndustry('All');
+                                                        setActiveRole('All');
+                                                    }}
+                                                    whileHover={{ scale: 1.02 }}
                                                     style={{ 
-                                                        padding: '1rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '1.5rem', cursor: 'pointer',
-                                                        border: '1px solid rgba(0, 198, 255, 0.3)', borderLeft: '4px solid #00C6FF', background: 'rgba(0, 198, 255, 0.05)',
-                                                        clipPath: 'polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px)'
+                                                        padding: '1rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '1.5rem',
+                                                        border: 'none', background: 'var(--accent-primary)',
+                                                        clipPath: 'polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px)',
+                                                        cursor: 'pointer'
                                                     }}
                                                 >
-                                                    <motion.span layoutId="partners-num" style={{ fontSize: '2rem', fontWeight: '900', color: '#00C6FF', fontFamily: 'monospace', textShadow: '0 0 15px rgba(0, 198, 255, 0.5)' }}>
+                                                    <motion.span layoutId="partners-num" style={{ fontSize: '2rem', fontWeight: '900', color: '#ffffff', fontFamily: 'monospace', textShadow: 'none' }}>
                                                         986
                                                     </motion.span>
                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                                        <span style={{ color: 'rgba(0, 198, 255, 0.5)' }}>[</span>
-                                                        <motion.span layoutId="partners-label" style={{ color: 'rgba(255,255,255,0.9)', fontSize: '1rem', letterSpacing: '2px', textTransform: 'uppercase', fontWeight: '500' }}>
+                                                        <span style={{ color: 'rgba(255,255,255,0.7)' }}>[</span>
+                                                        <motion.span layoutId="partners-label" style={{ color: '#ffffff', fontSize: '1rem', letterSpacing: '2px', textTransform: 'uppercase', fontWeight: '500' }}>
                                                             Global Partners
                                                         </motion.span>
-                                                        <span style={{ color: 'rgba(0, 198, 255, 0.5)' }}>]</span>
+                                                        <span style={{ color: 'rgba(255,255,255,0.7)' }}>]</span>
                                                     </div>
-                                                    <div style={{ marginLeft: 'auto', fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)', fontFamily: 'monospace', letterSpacing: '1px' }}>
+                                                    <div style={{ marginLeft: 'auto', color: '#ffffff', fontSize: '0.8rem', letterSpacing: '2px' }}>
                                                         [ CLICK TO RETURN ]
                                                     </div>
                                                 </motion.div>
@@ -387,13 +430,13 @@ const HomeView = () => {
                                                                         style={{
                                                                             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                                                                             padding: '0.5rem', border: '1px solid rgba(0, 198, 255, 0.1)', borderRadius: '8px',
-                                                                            background: 'rgba(3,8,22,0.6)', backdropFilter: 'blur(10px)', height: '75px', gap: '0.4rem'
+                                                                            background: 'var(--bg-glass-medium)', backdropFilter: 'blur(10px)', height: '75px', gap: '0.4rem'
                                                                         }}
                                                                     >
-                                                                        <div style={{ width: '24px', height: '24px', background: 'rgba(0,198,255,0.05)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px dashed rgba(0,198,255,0.3)' }}>
-                                                                            <LucideIcons.Box size={14} color="rgba(0,198,255,0.5)" />
+                                                                        <div style={{ width: '24px', height: '24px', background: 'var(--bg-glass-light)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px dashed rgba(0,198,255,0.3)' }}>
+                                                                            <LucideIcons.Box size={14} color="var(--accent-primary)" />
                                                                         </div>
-                                                                        <span style={{ fontSize: '0.55rem', color: 'rgba(255,255,255,0.8)', fontFamily: 'monospace', textAlign: 'center', letterSpacing: '0.5px' }}>{p.name}</span>
+                                                                        <span style={{ fontSize: '0.55rem', color: 'var(--text-primary)', fontFamily: 'monospace', textAlign: 'center', letterSpacing: '0.5px' }}>{p.name}</span>
                                                                     </motion.div>
                                                                 ))}
                                                             </AnimatePresence>
@@ -402,7 +445,7 @@ const HomeView = () => {
 
                                                     {/* Right Area: Vertical Industry Filter */}
                                                     <div style={{ width: '220px', display: 'flex', flexDirection: 'column', gap: '1rem', overflowY: 'auto', paddingRight: '10px', zIndex: 10 }} className="custom-scrollbar">
-                                                        <span style={{ fontSize: '0.75rem', color: '#ffffff', fontFamily: 'monospace', letterSpacing: '1px', textTransform: 'uppercase' }}>Industry</span>
+                                                        <span style={{ fontSize: '0.75rem', color: 'var(--text-primary)', fontFamily: 'monospace', letterSpacing: '1px', textTransform: 'uppercase' }}>Industry</span>
                                                         {INDUSTRY_DATA.map(ind => (
                                                             <motion.div
                                                                 key={ind.name}
@@ -410,22 +453,22 @@ const HomeView = () => {
                                                                 whileHover={{ x: -5, scale: 1.02 }}
                                                                 style={{
                                                                     width: '100%', minHeight: '90px', borderRadius: '8px', cursor: 'pointer', position: 'relative', overflow: 'hidden',
-                                                                    border: activeIndustry === ind.name ? '2px solid #00C6FF' : '1px solid rgba(255,255,255,0.1)',
-                                                                    boxShadow: activeIndustry === ind.name ? '0 0 20px rgba(0, 198, 255, 0.4)' : 'none',
+                                                                    border: activeIndustry === ind.name ? '2px solid var(--accent-primary)' : '1px solid rgba(255,255,255,0.1)',
+                                                                    boxShadow: activeIndustry === ind.name ? 'var(--accent-glow)' : 'none',
                                                                     transition: 'all 0.3s ease',
                                                                     backgroundImage: ind.image ? `url('${ind.image}')` : 'none',
                                                                     backgroundSize: 'cover', backgroundPosition: 'center',
-                                                                    backgroundColor: ind.image ? 'transparent' : (activeIndustry === ind.name ? 'rgba(0, 198, 255, 0.2)' : 'rgba(255,255,255,0.05)'),
+                                                                    backgroundColor: ind.image ? 'transparent' : (activeIndustry === ind.name ? 'var(--border-subtle)' : 'var(--border-subtle)'),
                                                                     flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center'
                                                                 }}
                                                             >
                                                                 {ind.image && (
-                                                                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 100%)' }} />
+                                                                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)' }} />
                                                                 )}
                                                                 <span style={{ 
-                                                                    color: activeIndustry === ind.name ? '#ffffff' : 'rgba(255,255,255,0.7)', 
-                                                                    fontSize: '0.85rem', fontWeight: 'bold', textAlign: 'center', textShadow: ind.image ? '0 2px 4px rgba(0,0,0,0.8)' : 'none',
-                                                                    position: 'relative', zIndex: 2, padding: '0 10px'
+                                                                    color: ind.image ? '#ffffff' : 'var(--text-primary)', 
+                                                                    fontSize: '0.9rem', fontWeight: 'bold', textAlign: 'center', textShadow: ind.image ? '0 2px 5px rgba(0,0,0,0.8)' : 'none',
+                                                                    position: 'relative', zIndex: 2, padding: '0 10px', letterSpacing: '1px'
                                                                 }}>
                                                                     {ind.name}
                                                                 </span>
@@ -441,38 +484,39 @@ const HomeView = () => {
                                                 animate={{ opacity: 1, y: 0 }}
                                                 exit={{ opacity: 0, y: -20 }}
                                                 transition={{ duration: 0.4 }}
-                                                style={{ display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '900px', margin: '0 auto', marginTop: '-20px', gap: '3rem' }}
+                                                style={{ display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '1300px', margin: '0 auto', marginTop: '-30px', gap: '2rem' }}
                                             >
                                                 {/* Header morphing from card */}
                                                 <motion.div 
                                                     layoutId="experience-card"
-                                                    onClick={() => setShowHistory(false)}
                                                     className="glass-panel"
-                                                    whileHover={{ y: -2, boxShadow: '0 10px 30px rgba(0, 198, 255, 0.1)' }}
+                                                    onClick={() => setShowHistory(false)}
+                                                    whileHover={{ scale: 1.02 }}
                                                     style={{ 
-                                                        padding: '1rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '1.5rem', cursor: 'pointer',
-                                                        border: '1px solid rgba(0, 198, 255, 0.3)', borderLeft: '4px solid #00C6FF', background: 'rgba(0, 198, 255, 0.05)',
-                                                        clipPath: 'polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px)'
+                                                        padding: '1rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '1.5rem',
+                                                        border: 'none', background: 'var(--accent-primary)',
+                                                        clipPath: 'polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px)',
+                                                        cursor: 'pointer'
                                                     }}
                                                 >
-                                                    <motion.span layoutId="experience-num" style={{ fontSize: '2rem', fontWeight: '900', color: '#00C6FF', fontFamily: 'monospace', textShadow: '0 0 15px rgba(0, 198, 255, 0.5)' }}>
+                                                    <motion.span layoutId="experience-num" style={{ fontSize: '2rem', fontWeight: '900', color: '#ffffff', fontFamily: 'monospace', textShadow: 'none' }}>
                                                         26
                                                     </motion.span>
                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                                        <span style={{ color: 'rgba(0, 198, 255, 0.5)' }}>[</span>
-                                                        <motion.span layoutId="experience-label" style={{ color: 'rgba(255,255,255,0.9)', fontSize: '1rem', letterSpacing: '2px', textTransform: 'uppercase', fontWeight: '500' }}>
+                                                        <span style={{ color: 'rgba(255,255,255,0.7)' }}>[</span>
+                                                        <motion.span layoutId="experience-label" style={{ color: '#ffffff', fontSize: '1rem', letterSpacing: '2px', textTransform: 'uppercase', fontWeight: '500' }}>
                                                             Years of Experience
                                                         </motion.span>
-                                                        <span style={{ color: 'rgba(0, 198, 255, 0.5)' }}>]</span>
+                                                        <span style={{ color: 'rgba(255,255,255,0.7)' }}>]</span>
                                                     </div>
-                                                    <div style={{ marginLeft: 'auto', fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)', fontFamily: 'monospace', letterSpacing: '1px' }}>
+                                                    <div style={{ marginLeft: 'auto', color: '#ffffff', fontSize: '0.8rem', letterSpacing: '2px' }}>
                                                         [ CLICK TO RETURN ]
                                                     </div>
                                                 </motion.div>
 
                                                 {/* Timeline Content */}
                                                 <div style={{ position: 'relative', paddingLeft: '200px' }}>
-                                                    <div style={{ position: 'absolute', left: '160px', top: '10px', bottom: '10px', width: '2px', background: 'linear-gradient(to bottom, #00C6FF, rgba(0,198,255,0))' }} />
+                                                    <div style={{ position: 'absolute', left: '160px', top: '10px', bottom: '10px', width: '2px', background: 'linear-gradient(to bottom, var(--accent-primary), transparent)' }} />
                                                     {historyData.map((item, index) => (
                                                         <motion.div 
                                                             key={index}
@@ -484,19 +528,19 @@ const HomeView = () => {
                                                             {/* Image Placeholder area */}
                                                             <div style={{ position: 'absolute', left: '-200px', top: '0', width: '140px', height: '90px', background: 'rgba(0,198,255,0.02)', border: '1px dashed rgba(0,198,255,0.3)', borderRadius: '4px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', transition: 'all 0.3s' }} className="timeline-img-placeholder">
                                                                 <LucideIcons.Image size={24} color="rgba(0,198,255,0.3)" style={{ marginBottom: '8px' }} />
-                                                                <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)', fontFamily: 'monospace', letterSpacing: '1px' }}>IMG_SRC_REQ</span>
+                                                                <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontFamily: 'monospace', letterSpacing: '1px' }}>IMG_SRC_REQ</span>
                                                             </div>
                                                             
-                                                            <div style={{ position: 'absolute', left: '-47px', top: '5px', width: '16px', height: '16px', borderRadius: '50%', background: '#030816', border: '2px solid #00C6FF', boxShadow: '0 0 10px #00C6FF' }} />
+                                                            <div style={{ position: 'absolute', left: '-47px', top: '5px', width: '16px', height: '16px', borderRadius: '50%', background: '#030816', border: '2px solid var(--accent-primary)', boxShadow: '0 0 10px var(--accent-primary)' }} />
                                                             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                                                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#00C6FF', fontFamily: 'monospace' }}>{item.year}</span>
-                                                                    <span style={{ fontSize: '0.7rem', padding: '0.2rem 0.5rem', border: `1px solid ${item.status === 'COMPLETED' ? 'rgba(0,198,255,0.5)' : 'rgba(255,255,255,0.2)'}`, color: item.status === 'COMPLETED' ? '#00C6FF' : 'rgba(255,255,255,0.5)', borderRadius: '4px', fontFamily: 'monospace' }}>
+                                                                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--accent-primary)', fontFamily: 'monospace' }}>{item.year}</span>
+                                                                    <span style={{ fontSize: '0.7rem', padding: '0.2rem 0.5rem', border: `1px solid ${item.status === 'COMPLETED' ? 'var(--accent-primary)' : 'var(--border-strong)'}`, color: item.status === 'COMPLETED' ? 'var(--accent-primary)' : 'var(--text-secondary)', borderRadius: '4px', fontFamily: 'monospace' }}>
                                                                         {item.status}
                                                                     </span>
                                                                 </div>
-                                                                <h3 style={{ fontSize: '1.2rem', color: '#fff', letterSpacing: '1px' }}>{item.event}</h3>
-                                                                <p style={{ color: 'rgba(255,255,255,0.6)', lineHeight: 1.5 }}>{item.desc}</p>
+                                                                <h3 style={{ fontSize: '1.2rem', color: 'var(--text-primary)', letterSpacing: '1px' }}>{item.event}</h3>
+                                                                <p style={{ color: 'var(--text-secondary)', lineHeight: 1.5 }}>{item.desc}</p>
                                                             </div>
                                                         </motion.div>
                                                     ))}

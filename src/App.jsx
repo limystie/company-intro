@@ -2,12 +2,26 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import HomeView from './views/HomeView';
+import { Sun, Moon } from 'lucide-react';
 import './styles/globals.css';
 
 const Layout = ({ children }) => {
+    const [isDarkMode, setIsDarkMode] = React.useState(() => {
+        const saved = localStorage.getItem('theme_isDarkMode');
+        return saved !== null ? JSON.parse(saved) : true;
+    });
+
+    React.useEffect(() => {
+        localStorage.setItem('theme_isDarkMode', JSON.stringify(isDarkMode));
+        if (isDarkMode) {
+            document.documentElement.removeAttribute('data-theme');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    }, [isDarkMode]);
     return (
         <div className="app-container">
-            <nav className="glass-panel" style={{ position: 'fixed', top: 0, width: '100%', zIndex: 50, padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderRadius: 0, border: 'none', background: 'rgba(255, 255, 255, 0.05)', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+            <nav className="glass-panel" style={{ position: 'fixed', top: 0, width: '100%', zIndex: 50, padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderRadius: 0, border: 'none', background: 'var(--bg-glass-heavy)', borderBottom: '1px solid var(--border-subtle)', transition: 'background 0.4s ease, border-color 0.4s ease' }}>
                 <Link to="/">
                     <img 
                         src="/logo.png" 
@@ -16,12 +30,19 @@ const Layout = ({ children }) => {
                             height: '36px', 
                             objectFit: 'contain', 
                             display: 'block',
-                            filter: 'brightness(0) invert(1)'
+                            filter: isDarkMode ? 'brightness(0) invert(1)' : 'none',
+                            transition: 'filter 0.4s ease'
                         }} 
                     />
                 </Link>
                 <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-                    <Link to="/" style={{ fontWeight: 600, letterSpacing: '0.5px' }}>HOME</Link>
+                    <button 
+                        onClick={() => setIsDarkMode(!isDarkMode)}
+                        style={{ background: 'transparent', border: 'none', color: 'var(--brand-secondary)', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '5px' }}
+                        title="Toggle Light/Dark Mode"
+                    >
+                        {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+                    </button>
                     <div style={{ display: 'flex', gap: '0.8rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
                         <span style={{ cursor: 'pointer', color: 'var(--text-primary)', fontWeight: 500 }}>EN</span>
                         <span>|</span>

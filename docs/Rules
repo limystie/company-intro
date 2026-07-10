@@ -1,0 +1,24 @@
+# Brand Guidelines
+
+## Representative Company Color
+This is the official primary color of the company and should be strictly adhered to in all design assets and primary branding elements.
+
+- **RGB**: 25, 101, 163
+- **HEX**: #1965A3
+- **CMYK**: 85, 38, 0, 36
+
+### Usage Rules
+1. **Consistency**: Use this exact color code for the main company logo and primary brand identity backgrounds.
+2. **UI Implementation**: In the CSS/Theme, this is defined as `--brand-primary` and should be the anchor for the visual identity.
+
+## Shadow Color
+This is a light gray color used for subtle borders, frames, and background structures where the primary color is too strong.
+
+- **HEX**: #E5E7EB
+- **RGB**: 229, 231, 235
+
+## GHZ Logo (Material)
+The GHZ (聚赫新材) logo features black typography with a distinct yellow-green accent for the horizontal bar in the 'H'. This green represents the Material division.
+
+- **Green Accent HEX**: #6FBA2C
+- **Green Accent RGB**: 111, 186, 44

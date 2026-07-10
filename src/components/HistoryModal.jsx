@@ -43,7 +43,7 @@ const HistoryModal = ({ isOpen, onClose }) => {
                             maxHeight: '85vh',
                             overflowY: 'auto',
                             padding: '3rem',
-                            background: 'rgba(3, 8, 22, 0.85)',
+                            background: 'var(--bg-glass-heavy)',
                             border: '1px solid rgba(0, 198, 255, 0.3)',
                             boxShadow: '0 0 50px rgba(0, 198, 255, 0.1)',
                             borderRadius: '20px'
@@ -52,21 +52,21 @@ const HistoryModal = ({ isOpen, onClose }) => {
                         {/* Close button */}
                         <button 
                             onClick={onClose}
-                            style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: '#00C6FF', fontSize: '1.5rem', cursor: 'pointer', transition: 'all 0.3s' }}
+                            style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: 'var(--accent-primary)', fontSize: '1.5rem', cursor: 'pointer', transition: 'all 0.3s' }}
                             onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.2)'}
                             onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
                         >
                             ✕
                         </button>
                         
-                        <h2 style={{ fontSize: '2rem', fontFamily: 'monospace', color: '#fff', marginBottom: '3rem', letterSpacing: '2px', borderBottom: '1px solid rgba(0,198,255,0.3)', paddingBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                        <h2 style={{ fontSize: '2rem', fontFamily: 'monospace', color: 'var(--text-primary)', marginBottom: '3rem', letterSpacing: '2px', borderBottom: '1px solid rgba(0,198,255,0.3)', paddingBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                             <span>HISTORY_LOG //</span>
-                            <span style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.4)' }}>SYS.RECORD</span>
+                            <span style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>SYS.RECORD</span>
                         </h2>
 
                         <div style={{ position: 'relative', paddingLeft: '2rem' }}>
                             {/* Vertical Line */}
-                            <div style={{ position: 'absolute', left: '0', top: '10px', bottom: '10px', width: '2px', background: 'linear-gradient(to bottom, #00C6FF, rgba(0,198,255,0))' }} />
+                            <div style={{ position: 'absolute', left: '0', top: '10px', bottom: '10px', width: '2px', background: 'linear-gradient(to bottom, var(--accent-primary), transparent)' }} />
                             
                             {historyData.map((item, index) => (
                                 <motion.div 
@@ -77,17 +77,17 @@ const HistoryModal = ({ isOpen, onClose }) => {
                                     style={{ position: 'relative', marginBottom: index === historyData.length - 1 ? 0 : '3rem' }}
                                 >
                                     {/* Node */}
-                                    <div style={{ position: 'absolute', left: '-2.45rem', top: '5px', width: '16px', height: '16px', borderRadius: '50%', background: '#030816', border: '2px solid #00C6FF', boxShadow: '0 0 10px #00C6FF' }} />
+                                    <div style={{ position: 'absolute', left: '-2.45rem', top: '5px', width: '16px', height: '16px', borderRadius: '50%', background: '#030816', border: '2px solid var(--accent-primary)', boxShadow: '0 0 10px var(--accent-primary)' }} />
                                     
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                            <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#00C6FF', fontFamily: 'monospace' }}>{item.year}</span>
-                                            <span style={{ fontSize: '0.7rem', padding: '0.2rem 0.5rem', border: `1px solid ${item.status === 'COMPLETED' ? 'rgba(0,198,255,0.5)' : 'rgba(255,255,255,0.2)'}`, color: item.status === 'COMPLETED' ? '#00C6FF' : 'rgba(255,255,255,0.5)', borderRadius: '4px', fontFamily: 'monospace' }}>
+                                            <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--accent-primary)', fontFamily: 'monospace' }}>{item.year}</span>
+                                            <span style={{ fontSize: '0.7rem', padding: '0.2rem 0.5rem', border: `1px solid ${item.status === 'COMPLETED' ? 'var(--accent-primary)' : 'var(--border-strong)'}`, color: item.status === 'COMPLETED' ? 'var(--accent-primary)' : 'var(--text-secondary)', borderRadius: '4px', fontFamily: 'monospace' }}>
                                                 {item.status}
                                             </span>
                                         </div>
-                                        <h3 style={{ fontSize: '1.2rem', color: '#fff', letterSpacing: '1px' }}>{item.event}</h3>
-                                        <p style={{ color: 'rgba(255,255,255,0.6)', lineHeight: 1.5 }}>{item.desc}</p>
+                                        <h3 style={{ fontSize: '1.2rem', color: 'var(--text-primary)', letterSpacing: '1px' }}>{item.event}</h3>
+                                        <p style={{ color: 'var(--text-secondary)', lineHeight: 1.5 }}>{item.desc}</p>
                                     </div>
                                 </motion.div>
                             ))}
