@@ -14,12 +14,12 @@ const historyData = [
 ];
 
 const INDUSTRY_DATA = [
-    { name: 'Consumer Electronics', image: '/images/industries/ce_bg_1783679265204.png' },
-    { name: 'Communication', image: '/images/industries/comm_bg_1783679277194.png' },
-    { name: 'Automotive', image: '/images/industries/auto_bg_1783679253328.png' },
-    { name: 'IOT', image: '/images/industries/iot_bg_1783679288434.png' },
-    { name: 'AI & Server', image: '/images/industries/ai_bg_1783679304120.png' },
-    { name: 'Wearable Device', image: '/images/industries/wearable_bg_1783679315874.png' }
+    { name: 'Consumer Electronics', image: '/longyoung-profile/images/industries/ce_bg_1783679265204.png' },
+    { name: 'Communication', image: '/longyoung-profile/images/industries/comm_bg_1783679277194.png' },
+    { name: 'Automotive', image: '/longyoung-profile/images/industries/auto_bg_1783679253328.png' },
+    { name: 'IOT', image: '/longyoung-profile/images/industries/iot_bg_1783679288434.png' },
+    { name: 'AI & Server', image: '/longyoung-profile/images/industries/ai_bg_1783679304120.png' },
+    { name: 'Wearable Device', image: '/longyoung-profile/images/industries/wearable_bg_1783679315874.png' }
 ];
 const INDUSTRIES = INDUSTRY_DATA.map(i => i.name);
 const ROLES = ['All', '终端客户', '系统厂FATP', '软硬板厂', '散热模组厂', '车用客户', '面板厂', '其他'];

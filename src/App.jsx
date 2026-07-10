@@ -24,7 +24,7 @@ const Layout = ({ children }) => {
             <nav className="glass-panel" style={{ position: 'fixed', top: 0, width: '100%', zIndex: 50, padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderRadius: 0, border: 'none', background: 'var(--bg-glass-heavy)', borderBottom: '1px solid var(--border-subtle)', transition: 'background 0.4s ease, border-color 0.4s ease' }}>
                 <Link to="/">
                     <img 
-                        src="/logo.png" 
+                        src="/longyoung-profile/logo.png" 
                         alt="LONGYOUNG" 
                         style={{ 
                             height: '36px', 
@@ -64,7 +64,7 @@ const Layout = ({ children }) => {
 
 function App() {
   return (
-    <Router>
+    <Router basename="/longyoung-profile">
         <Layout>
             <Routes>
                 <Route path="/" element={<HomeView />} />
