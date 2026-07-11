@@ -5,6 +5,7 @@ import * as LucideIcons from 'lucide-react';
 import DottedMap from '../components/DottedMap';
 import LocationsGlobeView from '../components/LocationsGlobeView';
 import BrandsView from '../components/BrandsView';
+import CompetitiveOfferingsView from '../components/CompetitiveOfferingsView';
 
 const historyData = [
     { year: '2000', event: 'Company Foundation', desc: 'Established the core business and vision.', status: 'COMPLETED' },
@@ -57,7 +58,7 @@ const AnimatedCounter = ({ value }) => {
 };
 
 const HomeView = () => {
-    const { fetchHomeData, snapshot, advantages, services, isLoading, error } = useAppStore();
+    const { fetchHomeData, snapshot, advantages, services, technologies, quality, isLoading, error } = useAppStore();
     const [activeSection, setActiveSection] = useState(() => sessionStorage.getItem('home_activeSection') || null);
     const [transitionKey, setTransitionKey] = useState(0);
     const [showHistory, setShowHistory] = useState(() => sessionStorage.getItem('home_showHistory') === 'true');
@@ -144,8 +145,8 @@ const HomeView = () => {
                         display: 'flex', 
                         flexDirection: 'column', 
                         alignItems: isExpanded ? 'flex-start' : 'center',
-                        flex: isExpanded ? '0 0 200px' : 'none',
-                        maxWidth: isExpanded ? '200px' : '100%',
+                        flex: isExpanded ? '0 0 230px' : 'none',
+                        maxWidth: isExpanded ? '230px' : '100%',
                         zIndex: 10,
                         filter: transitionKey > 0 ? 'url(#pixel-glitch)' : 'none'
                     }}
@@ -186,12 +187,13 @@ const HomeView = () => {
                         transition={{ duration: 0.8, delay: 0.6 }}
                         style={{ display: 'flex', flexDirection: isExpanded ? 'column' : 'row', gap: isExpanded ? '0.5rem' : '1rem', marginBottom: '3rem', flexWrap: 'wrap', justifyContent: isExpanded ? 'flex-start' : 'center', width: isExpanded ? '100%' : 'auto' }}
                     >
-                        {['snapshot', 'global', 'competitive', 'brands'].map((sectionKey, idx) => {
+                        {['snapshot', 'global', 'competitive', 'brands', 'production'].map((sectionKey, idx) => {
                             const labels = {
                                 'snapshot': 'Company Snapshot',
                                 'global': 'Global Footprint',
                                 'competitive': 'Competitive Offerings',
-                                'brands': 'Our Brands & Products'
+                                'brands': 'Our Brands & Products',
+                                'production': 'Production & Equipment'
                             };
                             return (
                                 <motion.button 
@@ -206,8 +208,8 @@ const HomeView = () => {
                                     transition={{ type: 'spring', stiffness: 400, damping: 17 }}
                                     style={{ 
                                         position: 'relative',
-                                        padding: isExpanded ? '1rem 1rem 1rem 2rem' : '0.8rem 2rem', 
-                                        fontSize: '0.85rem', 
+                                        padding: isExpanded ? '0.5rem 1.2rem' : '0.8rem 2rem', 
+                                        fontSize: '0.75rem', 
                                         color: activeSection === sectionKey ? '#ffffff' : 'var(--text-secondary)', 
                                         cursor: 'pointer', 
                                         backgroundColor: activeSection === sectionKey ? 'var(--accent-primary)' : 'var(--bg-glass-card)', 
@@ -216,14 +218,15 @@ const HomeView = () => {
                                         borderRadius: '50px',
                                         textAlign: isExpanded ? 'left' : 'center',
                                         width: isExpanded ? '100%' : 'auto',
+                                        height: isExpanded ? '65px' : 'auto',
                                         fontFamily: 'monospace',
                                         letterSpacing: '1px',
                                         display: 'flex',
                                         alignItems: 'center',
                                         boxShadow: activeSection === sectionKey ? '0 10px 25px rgba(25, 101, 163, 0.4)' : 'none',
                                     }}>
-                                    <span style={{ color: activeSection === sectionKey ? '#ffffff' : 'var(--text-secondary)', transition: 'color 0.3s', opacity: activeSection === sectionKey ? 0.9 : 1 }}>0{idx + 1} //</span>
-                                    <span style={{ color: activeSection === sectionKey ? '#ffffff' : 'var(--text-primary)', fontWeight: activeSection === sectionKey ? '700' : '500', letterSpacing: '2px', transition: 'all 0.3s' }}>{labels[sectionKey].toUpperCase()}</span>
+                                    <span style={{ color: activeSection === sectionKey ? '#ffffff' : 'var(--text-secondary)', transition: 'color 0.3s', opacity: activeSection === sectionKey ? 0.9 : 1, whiteSpace: 'nowrap', marginRight: '8px', fontSize: '0.85rem' }}>0{idx + 1} //</span>
+                                    <span style={{ color: activeSection === sectionKey ? '#ffffff' : 'var(--text-primary)', fontWeight: activeSection === sectionKey ? '700' : '500', letterSpacing: '1px', transition: 'all 0.3s', textAlign: 'left', lineHeight: 1.2, fontSize: '0.85rem' }}>{labels[sectionKey].toUpperCase()}</span>
                                     {activeSection === sectionKey && (
                                         <motion.div layoutId="navIndicator" style={{ position: 'absolute', right: '15px', top: '50%', translateY: '-50%', width: '8px', height: '8px', backgroundColor: '#ffffff', borderRadius: '50%', boxShadow: '0 0 10px rgba(255,255,255,0.8)' }} />
                                     )}
@@ -549,6 +552,15 @@ const HomeView = () => {
                                         )}
                                     </AnimatePresence>
                                 </motion.div>
+                            ) : activeSection === 'competitive' ? (
+                                <CompetitiveOfferingsView advantages={advantages} technologies={technologies} quality={quality} />
+                            ) : activeSection === 'production' ? (
+                                <div style={{ flex: 1, color: 'var(--text-secondary)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                    <div style={{ textAlign: 'center' }}>
+                                        <h2 style={{ fontSize: '2rem', color: 'var(--text-primary)', marginBottom: '1rem' }}>Production Capabilities & Equipment</h2>
+                                        <p style={{ fontSize: '1.2rem', opacity: 0.5 }}>This module is currently under construction.</p>
+                                    </div>
+                                </div>
                             ) : (
                                 <div style={{ flex: 1, color: 'var(--text-secondary)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                     {/* Content placeholder */}

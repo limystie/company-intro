@@ -1,0 +1,41 @@
+#!/usr/bin/expect -f
+
+set timeout 300
+set ip "43.173.100.169"
+set user "ubuntu"
+set password "wahaha@18"
+set domain "byining.com"
+
+puts "Creating subpath directory on server..."
+spawn ssh -o StrictHostKeyChecking=no $user@$ip "sudo mkdir -p /var/www/$domain/longyoung-profile && sudo chown -R ubuntu:ubuntu /var/www/$domain/longyoung-profile"
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    "\\\[sudo\\\] password for ubuntu:" {
+        send "$password\r"
+        exp_continue
+    }
+    timeout {
+        puts "Timeout creating directory"
+        exit 1
+    }
+    eof
+}
+
+puts "Uploading website files to subpath..."
+spawn scp -o StrictHostKeyChecking=no -r dist/. $user@$ip:/var/www/$domain/longyoung-profile/
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    timeout {
+        puts "Timeout uploading files"
+        exit 1
+    }
+    eof
+}
+
+puts "Done!"

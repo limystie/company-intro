@@ -91,7 +91,7 @@ const BrandsView = ({ onClose }) => {
                     <div style={{ display: 'flex', alignItems: 'center', height: '60px' }}>
                         <img src="/longyoung-profile/images/brands/LY LOGO英文.png" alt="Long Young Electronics" style={{ maxHeight: '100%', objectFit: 'contain' }} />
                     </div>
-                    <div style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '1.1rem', letterSpacing: '0.5px', color: '#1e293b' }}>
+                    <div style={{ fontWeight: '600', fontSize: '0.85rem', letterSpacing: '2px', textTransform: 'uppercase', color: '#475569' }}>
                         Composite Materials + Precise Die-cut + Functional Design Solutions
                     </div>
                 </div>
