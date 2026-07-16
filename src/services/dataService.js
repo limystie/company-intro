@@ -248,6 +248,185 @@ const TESTING_CAPABILITIES = [
     { name: 'Vibration & Drop Testing', target: 'Durability', precision: 'Up to 100G', standard: 'ISTA 3A' }
 ];
 
+const BRANCH_LOCATIONS = [
+    { 
+        id: '01', 
+        en: 'LONGYOUNG KUNSHAN', 
+        desc: 'Kunshan, Jiangsu / Corporate HQ & Manufacturing', 
+        icon: 'MapPin',
+        details: {
+            photoUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop',
+            established: '2000',
+            location: 'Kunshan, Jiangsu, China',
+            area: '85,000 sqm',
+            cleanroom: { level: 'Class 1000 & 10000', area: '5,000 sqm' },
+            mainBusiness: 'Precision Die-Cutting, Assembly, Material R&D',
+            mainClients: 'Apple, Dell, HP, Lenovo',
+            equipment: 'Automated die-cutting, 5-Axis CNC, Cleanroom coating',
+            headcount: '2500+',
+            capacity: '50M units/month'
+        }
+    },
+    { 
+        id: '02', 
+        en: 'CHUANYOUNG CHONGQING', 
+        desc: 'Chongqing, China / Manufacturing Facility', 
+        icon: 'MapPin',
+        details: {
+            photoUrl: 'https://images.unsplash.com/photo-1565514020179-026b92b84bb6?q=80&w=800&auto=format&fit=crop',
+            established: '2010',
+            location: 'Chongqing, China',
+            area: '30,000 sqm',
+            cleanroom: { level: 'Class 10000', area: '2,000 sqm' },
+            mainBusiness: 'Precision Die-Cutting, Assembly',
+            mainClients: 'HP, Inventec, Quanta',
+            equipment: 'High-speed stamping, automated inspection',
+            headcount: '800+',
+            capacity: '20M units/month'
+        }
+    },
+    { 
+        id: '03', 
+        en: 'LONGYOUNG VIETNAM', 
+        desc: 'CÔNG TY TNHH LONG YOUNG ELECTRONICS (VIỆT NAM)', 
+        icon: 'Globe',
+        details: {
+            photoUrl: '/longyoung-profile/vietnam_branch.jpg',
+            established: '2023',
+            location: 'Lô CN1B-2, KCN Quế Võ III, xã Việt Hùng, Huyện Quế Võ, Tỉnh Bắc Ninh, Việt Nam',
+            area: '5,000 sqm',
+            cleanroom: { level: 'Class 10000', area: '1,000 sqm' },
+            mainBusiness: 'Precision Die-Cutting, Assembly',
+            mainClients: 'Foxconn, Samsung, Compal',
+            equipment: 'Die-cutting machines (20+), AOI inspection',
+            headcount: '500+',
+            capacity: '10M units/month'
+        }
+    },
+    { 
+        id: '04', 
+        en: 'LONGYOUNG THAILAND', 
+        desc: 'Thailand / Operations Branch', 
+        icon: 'Globe',
+        details: {
+            photoUrl: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=800&auto=format&fit=crop',
+            location: 'Chachoengsao, Thailand',
+            area: '12,000 sqm',
+            cleanroom: null,
+            mainBusiness: 'Automotive Components, Electronics Assembly',
+            mainClients: 'Delta Electronics, Auto Tier-1s',
+            equipment: 'Injection molding, SMT lines',
+            headcount: '400+',
+            capacity: '8M units/month'
+        }
+    },
+    { 
+        id: '05', 
+        en: 'LONGYOUNG INTERNATIONAL', 
+        desc: 'Taipei, Taiwan / Global Business Center', 
+        icon: 'Building',
+        details: {
+            photoUrl: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop',
+            established: '1998',
+            location: 'Taipei, Taiwan',
+            area: '1,500 sqm',
+            cleanroom: null,
+            mainBusiness: 'Global Sales, Marketing, Supply Chain Management',
+            mainClients: 'Global Brands',
+            equipment: 'Office & IT Infrastructure',
+            headcount: '150+',
+            capacity: 'N/A'
+        }
+    },
+    { 
+        id: '06', 
+        en: 'LONGYOUNG USA', 
+        desc: 'San Jose, CA / North America Office', 
+        icon: 'Globe2',
+        details: {
+            photoUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop',
+            established: '2018',
+            location: 'San Jose, CA, USA',
+            area: '800 sqm',
+            cleanroom: null,
+            mainBusiness: 'North America Sales, FAE Support, Tech R&D',
+            mainClients: 'Silicon Valley Tech Giants',
+            equipment: 'Lab testing equipment, Office infrastructure',
+            headcount: '30+',
+            capacity: 'N/A'
+        }
+    },
+    { 
+        id: '07', 
+        en: 'GHZ NEW MATERIAL HUAI\'AN', 
+        desc: 'Huai\'an, Jiangsu / Production Facility', 
+        icon: 'Factory',
+        details: {
+            photoUrl: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?q=80&w=800&auto=format&fit=crop',
+            location: 'Huai\'an, Jiangsu, China',
+            area: '40,000 sqm',
+            cleanroom: { level: 'Class 1000', area: '3,000 sqm' },
+            mainBusiness: 'Advanced Materials, Thermal & EMI Solutions',
+            mainClients: 'Electronics Manufacturers',
+            equipment: 'Roll-to-roll coating, Mixing machines',
+            headcount: '600+',
+            capacity: '5M sqm/month'
+        }
+    },
+    { 
+        id: '08', 
+        en: 'GHZ NEW MATERIAL TAIWAN', 
+        desc: 'Zhunan, Taiwan / R&D & Manufacturing', 
+        icon: 'Factory',
+        details: {
+            photoUrl: 'https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?q=80&w=800&auto=format&fit=crop',
+            established: '2015',
+            location: 'Bangkok, Thailand',
+            area: '5,000 sqm',
+            cleanroom: { level: 'Class 100 & 1000', area: '1,000 sqm' },
+            mainBusiness: 'High-Frequency Materials R&D, Prototype Production',
+            mainClients: 'IC Designers, Telecom Companies',
+            equipment: 'High-frequency analyzers, Lab coating lines',
+            headcount: '100+',
+            capacity: 'R&D / Pilot Runs'
+        }
+    },
+    { 
+        id: '09', 
+        en: 'DWELL NEW MATERIAL (SUZHOU)', 
+        desc: 'Suzhou, Jiangsu / Operations', 
+        icon: 'Factory',
+        details: {
+            photoUrl: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?q=80&w=800&auto=format&fit=crop',
+            location: 'Suzhou, Jiangsu, China',
+            area: '25,000 sqm',
+            cleanroom: { level: 'Class 10000', area: '2,500 sqm' },
+            mainBusiness: 'Protective Films, Eco-packaging',
+            mainClients: 'Display Manufacturers, Consumer Brands',
+            equipment: 'Film extrusion, Slitting machines',
+            headcount: '450+',
+            capacity: '20M sqm/month'
+        }
+    },
+    { 
+        id: '10', 
+        en: 'VSI TECHNOLOGY', 
+        desc: 'Taipei, Taiwan / Advanced Technology Division', 
+        icon: 'Cpu',
+        details: {
+            photoUrl: 'https://images.unsplash.com/photo-1534066127395-5807afb7deba?q=80&w=800&auto=format&fit=crop',
+            location: 'Taipei, Taiwan',
+            area: '2,000 sqm',
+            cleanroom: null,
+            mainBusiness: 'Automation Solutions, Smart Manufacturing Integration',
+            mainClients: 'Internal factories, external manufacturing partners',
+            equipment: 'Robotics lab, Integration testing rigs',
+            headcount: '120+',
+            capacity: '50 systems/year'
+        }
+    }
+];
+
 export const dataService = {
     getGlobalFootprint: async () => {
         return new Promise(resolve => setTimeout(() => resolve(GLOBAL_FOOTPRINT), 300));
@@ -286,5 +465,9 @@ export const dataService = {
 
     getTestingCapabilities: async () => {
         return new Promise(resolve => setTimeout(() => resolve(TESTING_CAPABILITIES), 300));
+    },
+
+    getBranchLocations: async () => {
+        return new Promise(resolve => setTimeout(() => resolve(BRANCH_LOCATIONS), 300));
     }
 };

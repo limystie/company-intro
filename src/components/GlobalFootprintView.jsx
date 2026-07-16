@@ -1,22 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as LucideIcons from 'lucide-react';
-
-const locations = [
-    { id: '01', en: 'LONGYOUNG KUNSHAN', desc: 'Kunshan, Jiangsu / Corporate HQ & Manufacturing', icon: 'MapPin' },
-    { id: '02', en: 'CHUANYOUNG CHONGQING', desc: 'Chongqing, China / Manufacturing Facility', icon: 'MapPin' },
-    { id: '03', en: 'LONGYOUNG VIETNAM', desc: 'Vietnam / Operations Branch', icon: 'Globe' },
-    { id: '04', en: 'LONGYOUNG THAILAND', desc: 'Thailand / Operations Branch', icon: 'Globe' },
-    { id: '05', en: 'LONGYOUNG INTERNATIONAL', desc: 'Taipei, Taiwan / Global Business Center', icon: 'Building' },
-    { id: '06', en: 'LONGYOUNG USA', desc: 'San Jose, CA / North America Office', icon: 'Globe2' },
-    { id: '07', en: 'GHZ NEW MATERIAL HUAI\'AN', desc: 'Huai\'an, Jiangsu / Production Facility', icon: 'Factory' },
-    { id: '08', en: 'GHZ NEW MATERIAL TAIWAN', desc: 'Zhunan, Taiwan / R&D & Manufacturing', icon: 'Factory' },
-    { id: '09', en: 'DWELL NEW MATERIAL (SUZHOU)', desc: 'Suzhou, Jiangsu / Operations', icon: 'Factory' },
-    { id: '10', en: 'VSI TECHNOLOGY', desc: 'Taipei, Taiwan / Advanced Technology Division', icon: 'Cpu' },
-];
+import { dataService } from '../services/dataService';
+import BranchDetailModal from './BranchDetailModal';
 
 const GlobalFootprintView = () => {
     const [hoveredId, setHoveredId] = useState(null);
+    const [locations, setLocations] = useState([]);
+    const [selectedBranch, setSelectedBranch] = useState(null);
+
+    useEffect(() => {
+        dataService.getBranchLocations().then(data => {
+            setLocations(data);
+        });
+    }, []);
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -41,6 +38,7 @@ const GlobalFootprintView = () => {
                 variants={itemVariants}
                 onMouseEnter={() => setHoveredId(loc.id)}
                 onMouseLeave={() => setHoveredId(null)}
+                onClick={() => setSelectedBranch(loc)}
                 style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -237,6 +235,13 @@ const GlobalFootprintView = () => {
                 </div>
 
             </motion.div>
+
+            {/* Branch Detail Modal */}
+            <BranchDetailModal 
+                isOpen={!!selectedBranch} 
+                onClose={() => setSelectedBranch(null)} 
+                branchData={selectedBranch} 
+            />
         </motion.div>
     );
 };
