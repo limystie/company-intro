@@ -22,7 +22,10 @@ const Layout = ({ children }) => {
     return (
         <div className="app-container">
             <nav className="glass-panel" style={{ position: 'fixed', top: 0, width: '100%', zIndex: 50, padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderRadius: 0, border: 'none', background: 'var(--bg-glass-heavy)', borderBottom: '1px solid var(--border-subtle)', transition: 'background 0.4s ease, border-color 0.4s ease' }}>
-                <Link to="/">
+                <Link to="/" onClick={() => {
+                    window.dispatchEvent(new Event('reset-home-view'));
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}>
                     <img 
                         src="/longyoung-profile/logo.png" 
                         alt="LONGYOUNG" 
@@ -55,9 +58,7 @@ const Layout = ({ children }) => {
             <main style={{ paddingTop: '80px', minHeight: 'calc(100vh - 60px)' }}>
                 {children}
             </main>
-            <footer style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-secondary)', borderTop: '1px solid var(--glass-border)' }}>
-                © 2025 Longyoung Electronics. Inspire Technology and Life.
-            </footer>
+
         </div>
     );
 };

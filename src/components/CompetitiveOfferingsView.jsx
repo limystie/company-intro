@@ -170,7 +170,7 @@ const CompetitiveOfferingsView = ({ advantages, technologies, quality }) => {
     const tabs = [
         { id: 'advantages', label: 'Core Advantages' },
         { id: 'technologies', label: 'Core Technologies' },
-        { id: 'quality', label: 'Quality & Sustainability' }
+        { id: 'quality', label: 'R&D Team' }
     ];
 
     // Helper components to render each tab's content
@@ -538,13 +538,14 @@ const CompetitiveOfferingsView = ({ advantages, technologies, quality }) => {
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2.5rem', marginTop: '-4rem' }}>
                 <div style={{ 
                     display: 'flex', background: 'var(--bg-glass-card)', border: '1px solid var(--border-subtle)', 
-                    borderRadius: '50px', padding: '8px', gap: '8px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)'
+                    borderRadius: '50px', padding: '4px', gap: '4px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
+                    width: '100%', maxWidth: '700px'
                 }}>
                     {tabs.map(tab => (
                         <div 
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            style={{ position: 'relative', padding: '1rem 2.5rem', cursor: 'pointer', borderRadius: '40px', zIndex: 1 }}
+                            style={{ position: 'relative', padding: '0.6rem 1rem', cursor: 'pointer', borderRadius: '40px', zIndex: 1, flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}
                         >
                             {activeTab === tab.id && (
                                 <motion.div 
@@ -556,9 +557,9 @@ const CompetitiveOfferingsView = ({ advantages, technologies, quality }) => {
                             <span style={{ 
                                 position: 'relative', 
                                 zIndex: 2, 
-                                fontSize: '1rem', 
-                                letterSpacing: '2px', 
-                                fontWeight: 500, 
+                                fontSize: '0.8rem', 
+                                letterSpacing: '1.5px', 
+                                fontWeight: 600, 
                                 textTransform: 'uppercase', 
                                 color: activeTab === tab.id ? '#ffffff' : 'var(--text-secondary)', 
                                 transition: 'color 0.3s' 

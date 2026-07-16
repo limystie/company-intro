@@ -6,12 +6,23 @@ import DottedMap from '../components/DottedMap';
 import LocationsGlobeView from '../components/LocationsGlobeView';
 import BrandsView from '../components/BrandsView';
 import CompetitiveOfferingsView from '../components/CompetitiveOfferingsView';
+import GlobalFootprintView from '../components/GlobalFootprintView';
+import CorporateMetricsView from '../components/CorporateMetricsView';
 
 const historyData = [
-    { year: '2000', event: 'Company Foundation', desc: 'Established the core business and vision.', status: 'COMPLETED' },
-    { year: '2017', event: 'IPO in Taiwan', desc: 'Successfully listed on the Taiwan Stock Exchange (TW.8499).', status: 'COMPLETED' },
-    { year: '2022', event: 'IPO in Shenzhen', desc: 'Expanded market presence with listing on the Shenzhen Stock Exchange (SZ.301389).', status: 'COMPLETED' },
-    { year: '2025', event: 'Global Expansion & Future', desc: 'Looking towards a future of continuous technological innovation and sustainable growth.', status: 'IN PROGRESS' }
+    { year: '2000', event: 'Company Foundation', desc: 'LONGYOUNG Electronics is established in Kunshan, Jiangsu in March, 2000.' },
+    { year: '2001', event: 'Die-Cutting Pioneer', desc: 'Became the first professional die-cutting factory for EMC materials in East China.' },
+    { year: '2006', event: 'Internal Laboratory', desc: 'Established an internal laboratory for material performance and environmental testing.' },
+    { year: '2008', event: 'Vertical Integration', desc: 'Established Huai\'an Fuyang Material Co., Ltd., commencing R&D and production of EMC raw materials.' },
+    { year: '2013', event: 'Southwest Expansion', desc: 'Established Chongqing Chuanyang Electronics to serve the southwest region.' },
+    { year: '2014', event: 'Taipei Service Center', desc: 'Established a service center in Taipei to strengthen the regional service network.' },
+    { year: '2016', event: 'Thermal Management', desc: 'Started R&D and production of thermal management materials.' },
+    { year: '2017', event: 'Taiwan IPO', desc: 'Successfully listed on the Taiwan Stock Exchange (Stock Code: TW.8499).' },
+    { year: '2019', event: 'Established GHZ New Materials', desc: 'Started R&D of HVLT5 ultra-thin high-frequency copper foil, deepening presence in the AI sector.' },
+    { year: '2022', event: 'Shenzhen IPO', desc: 'Successfully listed on the Shenzhen Stock Exchange (Stock Code: SZ.301389).' },
+    { year: '2023', event: 'Vietnam Expansion', desc: 'Established LONGYOUNG Vietnam, which commenced production in the very same year.' },
+    { year: '2024', event: 'Strategic Acquisitions', desc: 'Acquired Suzhou DWELL and Changzhou VSI, achieving comprehensive integration in materials.' },
+    { year: '2025', event: 'Thailand Expansion', desc: 'Established LONGYOUNG Thailand and commenced construction of the phase II manufacturing facility.' }
 ];
 
 const INDUSTRY_DATA = [
@@ -38,7 +49,7 @@ const AnimatedCounter = ({ value }) => {
     
     useEffect(() => {
         let start = 0;
-        const duration = 2000;
+        const duration = 800; // Sped up from 2000ms
         const increment = target / (duration / 16);
         
         const timer = setInterval(() => {
@@ -58,7 +69,7 @@ const AnimatedCounter = ({ value }) => {
 };
 
 const HomeView = () => {
-    const { fetchHomeData, snapshot, advantages, services, technologies, quality, isLoading, error } = useAppStore();
+    const { fetchHomeData, snapshot, advantages, services, technologies, quality, metrics, isLoading, error } = useAppStore();
     const [activeSection, setActiveSection] = useState(() => sessionStorage.getItem('home_activeSection') || null);
     const [transitionKey, setTransitionKey] = useState(0);
     const [showHistory, setShowHistory] = useState(() => sessionStorage.getItem('home_showHistory') === 'true');
@@ -72,6 +83,16 @@ const HomeView = () => {
         if (activeSection) sessionStorage.setItem('home_activeSection', activeSection);
         else sessionStorage.removeItem('home_activeSection');
     }, [activeSection]);
+
+    // Listen for global reset event from the logo
+    useEffect(() => {
+        const handleReset = () => {
+            setActiveSection(null);
+            setTransitionKey(prev => prev + 1);
+        };
+        window.addEventListener('reset-home-view', handleReset);
+        return () => window.removeEventListener('reset-home-view', handleReset);
+    }, []);
 
     useEffect(() => { sessionStorage.setItem('home_showHistory', showHistory); }, [showHistory]);
     useEffect(() => { sessionStorage.setItem('home_showPartners', showPartners); }, [showPartners]);
@@ -119,6 +140,32 @@ const HomeView = () => {
                 transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
             }}>
                 <DottedMap />
+                
+                {/* Right Bottom Giant Auxiliary Globe */}
+                <AnimatePresence>
+                    {!isExpanded && (
+                        <motion.div
+                            initial={{ opacity: 0, rotate: -30, scale: 0.8 }}
+                            animate={{ opacity: 0.04, rotate: 0, scale: 1 }}
+                            exit={{ opacity: 0, scale: 1.1, transition: { duration: 0.5 } }}
+                            transition={{ duration: 1.5, ease: 'easeOut' }}
+                            style={{
+                                position: 'absolute',
+                                right: '-10%',
+                                bottom: '-55%', // Moved significantly further down
+                                pointerEvents: 'none',
+                                zIndex: 0
+                            }}
+                        >
+                            <motion.div
+                                animate={{ rotate: 360 }}
+                                transition={{ duration: 150, repeat: Infinity, ease: 'linear' }}
+                            >
+                                <LucideIcons.Globe size={900} color="var(--accent-primary)" strokeWidth={0.5} />
+                            </motion.div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
 
 
                 {/* SVG Filter for Pixel Decomposition Glitch */}
@@ -139,58 +186,180 @@ const HomeView = () => {
                 </svg>
                 
                 {/* Left Side: Header & Buttons */}
+                {/* Left Side (or main container): Header & Navigation */}
                 <motion.div 
                     layout
                     style={{ 
                         display: 'flex', 
-                        flexDirection: 'column', 
+                        flexDirection: isExpanded ? 'column' : 'row', 
                         alignItems: isExpanded ? 'flex-start' : 'center',
-                        flex: isExpanded ? '0 0 230px' : 'none',
-                        maxWidth: isExpanded ? '230px' : '100%',
+                        justifyContent: 'flex-start', // Changed from space-between to flex-start to move everything left
+                        flex: isExpanded ? '0 0 230px' : '1',
+                        width: isExpanded ? '230px' : '100%', // Fixed: constrain width to 230px when expanded so it doesn't push right content away
+
                         zIndex: 10,
-                        filter: transitionKey > 0 ? 'url(#pixel-glitch)' : 'none'
+                        filter: transitionKey > 0 ? 'url(#pixel-glitch)' : 'none',
+                        gap: isExpanded ? '0' : '3rem' // Reduced to 3rem to accommodate the auxiliary line in the middle
                     }}
                 >
+                    {/* Main Title Area (Left when !isExpanded) */}
+                    <AnimatePresence>
+                        <motion.div
+                            layout
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                flex: isExpanded ? 'none' : '1',
+                                marginBottom: isExpanded ? '2rem' : '0',
+                                paddingLeft: isExpanded ? '0' : '5rem' // Shift the whole left block to the right
+                            }}
+                        >
+                            {!isExpanded && (
+                                <motion.div
+                                    initial={{ opacity: 0, x: -30 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, height: 0, overflow: 'hidden' }}
+                                    transition={{ duration: 0.6 }}
+                                >
+                                    <h1 style={{ 
+                                        fontSize: '4.5rem',
+                                        lineHeight: 1.15, 
+                                        margin: '0 0 2.5rem -4px', // -4px for strict optical left alignment, increased bottom margin
+                                        textAlign: 'left',
+                                        letterSpacing: '-1px',
+                                        color: 'var(--text-primary)',
+                                        display: 'flex',
+                                        flexDirection: 'column'
+                                    }}>
+                                        <span style={{ fontWeight: 300 }}>INSPIRE</span>
+                                        <span style={{ fontWeight: 900, color: 'var(--accent-primary)' }}>TECHNOLOGY</span>
+                                        <span style={{ fontWeight: 300 }}>AND LIFE</span>
+                                    </h1>
+                                    
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', margin: '0 0 4rem 0', flexWrap: 'wrap' }}>
+                                        <p style={{ 
+                                            fontSize: '1.5rem', 
+                                            color: 'var(--text-primary)', 
+                                            fontWeight: 800, 
+                                            letterSpacing: '2px', 
+                                            textAlign: 'left', 
+                                            margin: 0,
+                                            textTransform: 'uppercase',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '0.8rem',
+                                            flexWrap: 'wrap'
+                                        }}>
+                                            LONGYOUNG ELECTRONICS <span style={{ fontWeight: 400, color: 'var(--text-secondary)' }}>COMPANY PROFILE</span>
+                                        </p>
+                                        <div style={{ 
+                                            padding: '4px 16px', 
+                                            border: 'none', 
+                                            borderRadius: '8px', 
+                                            fontSize: '1.5rem', 
+                                            fontWeight: 900, 
+                                            color: '#ffffff',
+                                            background: 'var(--accent-primary)',
+                                            boxShadow: '0 8px 20px rgba(0, 198, 255, 0.3)'
+                                        }}>
+                                            2026
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Bottom Icons (Independent Modular Pills) */}
+                                    {services && services.length > 0 && (
+                                        <div style={{ 
+                                            display: 'flex', 
+                                            flexWrap: 'wrap',
+                                            alignItems: 'center', 
+                                            gap: '1.2rem'
+                                        }}>
+                                            {services.map((service) => {
+                                                const IconComponent = LucideIcons[service.icon] || LucideIcons.Circle;
+                                                return (
+                                                    <motion.div 
+                                                        key={service.id}
+                                                        whileHover={{ scale: 1.05, y: -2, backgroundColor: 'var(--accent-primary)', color: '#ffffff', borderColor: 'var(--accent-primary)' }}
+                                                        style={{ 
+                                                            display: 'flex', 
+                                                            alignItems: 'center', 
+                                                            gap: '0.8rem', 
+                                                            cursor: 'pointer', 
+                                                            transition: 'all 0.3s ease', 
+                                                            color: 'var(--text-primary)',
+                                                            background: 'var(--bg-glass-card)',
+                                                            padding: '0.8rem 1.5rem',
+                                                            borderRadius: '50px',
+                                                            border: '1px solid var(--border-subtle)',
+                                                            boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
+                                                            backdropFilter: 'blur(8px)',
+                                                            WebkitBackdropFilter: 'blur(8px)'
+                                                        }}
+                                                    >
+                                                        <IconComponent size={20} strokeWidth={2} />
+                                                        <span style={{ fontSize: '0.85rem', letterSpacing: '1px', textTransform: 'uppercase', fontWeight: 700, color: 'inherit' }}>{service.name}</span>
+                                                    </motion.div>
+                                                )
+                                            })}
+                                        </div>
+                                    )}
+                                </motion.div>
+                            )}
+                        </motion.div>
+                    </AnimatePresence>
+
+                    {/* Tech Auxiliary Line */}
                     <AnimatePresence>
                         {!isExpanded && (
-                            <motion.h1 
-                                layout
+                            <motion.div
                                 initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: 'auto' }}
-                                exit={{ opacity: 0, height: 0, overflow: 'hidden' }}
-                                transition={{ duration: 0.4 }}
-                                style={{ fontSize: '4rem', maxWidth: '800px', marginBottom: '1rem' }}
+                                animate={{ opacity: 1, height: '450px' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
+                                style={{
+                                    width: '1px',
+                                    background: 'var(--border-subtle)', // Clean solid line instead of glow gradient
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    opacity: 0.6
+                                }}
                             >
-                                INSPIRE <span className="text-gradient">TECHNOLOGY</span> AND LIFE
-                            </motion.h1>
+                                <motion.div 
+                                    animate={{ 
+                                        boxShadow: ['0 0 4px 0px var(--accent-primary)', '0 0 12px 2px var(--accent-primary)', '0 0 4px 0px var(--accent-primary)'],
+                                        opacity: [0.5, 1, 0.5]
+                                    }}
+                                    transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                                    style={{
+                                        width: '4px',
+                                        height: '4px',
+                                        backgroundColor: 'var(--accent-primary)',
+                                        borderRadius: '50%'
+                                    }} 
+                                />
+                            </motion.div>
                         )}
                     </AnimatePresence>
-                    <AnimatePresence>
-                        {!isExpanded && (
-                            <motion.p 
-                                layout
-                                initial={{ opacity: 0, height: 0, marginBottom: 0 }}
-                                animate={{ opacity: 1, height: 'auto', marginBottom: '2rem' }}
-                                exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-                                transition={{ duration: 0.4 }}
-                                style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', maxWidth: '600px', overflow: 'hidden', fontWeight: 'bold', letterSpacing: '2px', textAlign: 'center', lineHeight: 1.6 }}
-                            >
-                                LONGYOUNG ELECTRONICS COMPANY PROFILE<br />
-                                <span style={{ fontSize: '1rem', fontWeight: 'normal', opacity: 0.8, letterSpacing: '4px' }}>2026</span>
-                            </motion.p>
-                        )}
-                    </AnimatePresence>
+
+                    {/* Navigation Menu (Right when !isExpanded) */}
                     <motion.div 
                         layout
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.8, delay: 0.6 }}
-                        style={{ display: 'flex', flexDirection: isExpanded ? 'column' : 'row', gap: isExpanded ? '0.5rem' : '1rem', marginBottom: '3rem', flexWrap: 'wrap', justifyContent: isExpanded ? 'flex-start' : 'center', width: isExpanded ? '100%' : 'auto' }}
+                        style={{ 
+                            display: 'flex', 
+                            flexDirection: 'column', 
+                            flex: isExpanded ? 'none' : '0 0 420px', // Reduced width
+                            width: isExpanded ? '100%' : '100%',
+                            gap: isExpanded ? '0.5rem' : '1rem', // Slightly smaller gap
+                            alignItems: 'stretch', // Ensure all pills are full width of the container
+                            transform: isExpanded ? 'none' : 'translateX(-15px)' // Shift the entire block to the left by 15px
+                        }}
                     >
-                        {['snapshot', 'global', 'competitive', 'brands', 'production'].map((sectionKey, idx) => {
+                        {['snapshot', 'metrics', 'competitive', 'global', 'brands', 'production'].map((sectionKey, idx) => {
                             const labels = {
                                 'snapshot': 'Company Snapshot',
                                 'global': 'Global Footprint',
+                                'metrics': 'Corporate Metrics',
                                 'competitive': 'Competitive Offerings',
                                 'brands': 'Our Brands & Products',
                                 'production': 'Production & Equipment'
@@ -199,66 +368,49 @@ const HomeView = () => {
                                 <motion.button 
                                     key={sectionKey}
                                     onClick={() => handleSectionClick(sectionKey)}
-                                    whileHover={{ 
-                                        y: -3,
-                                        backgroundColor: activeSection === sectionKey ? 'var(--accent-primary)' : 'var(--bg-glass-light)',
-                                        borderRadius: '50px',
-                                        textShadow: 'var(--accent-glow)'
-                                    }}
-                                    transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                                    whileHover={{ x: 10 }}
+                                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                                     style={{ 
                                         position: 'relative',
-                                        padding: isExpanded ? '0.5rem 1.2rem' : '0.8rem 2rem', 
-                                        fontSize: '0.75rem', 
-                                        color: activeSection === sectionKey ? '#ffffff' : 'var(--text-secondary)', 
+                                        padding: isExpanded ? '0.8rem 1rem' : '1rem 0', // No horizontal padding when not expanded
+                                        fontSize: isExpanded ? '0.8rem' : '1rem',
+                                        color: activeSection === sectionKey ? 'var(--accent-primary)' : 'var(--text-primary)', 
                                         cursor: 'pointer', 
-                                        backgroundColor: activeSection === sectionKey ? 'var(--accent-primary)' : 'var(--bg-glass-card)', 
+                                        backgroundColor: isExpanded ? (activeSection === sectionKey ? 'rgba(0,119,255,0.1)' : 'transparent') : 'transparent',
                                         border: 'none', 
-                                        borderLeft: activeSection === sectionKey ? 'none' : '1px solid var(--border-strong)',
-                                        borderRadius: '50px',
-                                        textAlign: isExpanded ? 'left' : 'center',
-                                        width: isExpanded ? '100%' : 'auto',
-                                        height: isExpanded ? '65px' : 'auto',
-                                        fontFamily: 'monospace',
-                                        letterSpacing: '1px',
+                                        borderLeft: isExpanded && activeSection === sectionKey ? '3px solid var(--accent-primary)' : '3px solid transparent',
+                                        borderRadius: isExpanded ? '4px' : '0',
+                                        textAlign: 'left',
                                         display: 'flex',
                                         alignItems: 'center',
-                                        boxShadow: activeSection === sectionKey ? '0 10px 25px rgba(25, 101, 163, 0.4)' : 'none',
+                                        justifyContent: 'flex-start',
+                                        fontFamily: '"SF Mono", "Fira Code", "Consolas", monospace',
+                                        width: '100%',
+                                        outline: 'none'
                                     }}>
-                                    <span style={{ color: activeSection === sectionKey ? '#ffffff' : 'var(--text-secondary)', transition: 'color 0.3s', opacity: activeSection === sectionKey ? 0.9 : 1, whiteSpace: 'nowrap', marginRight: '8px', fontSize: '0.85rem' }}>0{idx + 1} //</span>
-                                    <span style={{ color: activeSection === sectionKey ? '#ffffff' : 'var(--text-primary)', fontWeight: activeSection === sectionKey ? '700' : '500', letterSpacing: '1px', transition: 'all 0.3s', textAlign: 'left', lineHeight: 1.2, fontSize: '0.85rem' }}>{labels[sectionKey].toUpperCase()}</span>
-                                    {activeSection === sectionKey && (
-                                        <motion.div layoutId="navIndicator" style={{ position: 'absolute', right: '15px', top: '50%', translateY: '-50%', width: '8px', height: '8px', backgroundColor: '#ffffff', borderRadius: '50%', boxShadow: '0 0 10px rgba(255,255,255,0.8)' }} />
-                                    )}
+                                    <span style={{ 
+                                        color: activeSection === sectionKey ? 'var(--accent-primary)' : 'var(--text-secondary)', 
+                                        marginRight: isExpanded ? '10px' : '20px', 
+                                        fontSize: isExpanded ? '0.75rem' : '0.95rem',
+                                        fontWeight: 600,
+                                        letterSpacing: '2px',
+                                        transition: 'color 0.3s'
+                                    }}>
+                                        {String(idx + 1).padStart(2, '0')} //
+                                    </span>
+                                    <span style={{ 
+                                        fontWeight: activeSection === sectionKey ? '800' : (isExpanded ? '500' : '700'), 
+                                        letterSpacing: isExpanded ? '1px' : '2px', 
+                                        transition: 'all 0.3s',
+                                        textTransform: 'uppercase',
+                                        color: 'var(--text-primary)'
+                                    }}>
+                                        {labels[sectionKey]}
+                                    </span>
                                 </motion.button>
                             );
                         })}
                     </motion.div>
-
-                    <AnimatePresence>
-                        {!isExpanded && services && services.length > 0 && (
-                            <motion.div
-                                layout
-                                initial={{ opacity: 0, y: 20, height: 0 }}
-                                animate={{ opacity: 1, y: 0, height: 'auto' }}
-                                exit={{ opacity: 0, y: 20, height: 0 }}
-                                transition={{ duration: 0.4 }}
-                                style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap', justifyContent: 'center', overflow: 'visible', padding: '1rem' }}
-                            >
-                                {services.map((service) => {
-                                    const IconComponent = LucideIcons[service.icon] || LucideIcons.Circle;
-                                    return (
-                                        <div key={service.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.8rem', cursor: 'pointer' }} className="service-icon-group">
-                                            <div className="service-icon-circle">
-                                                <IconComponent size={28} color="currentColor" />
-                                            </div>
-                                            <span style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', letterSpacing: '1px', textTransform: 'uppercase', fontWeight: 500 }}>{service.name}</span>
-                                        </div>
-                                    )
-                                })}
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
                 </motion.div>
 
                 {/* Right Side: Content Area */}
@@ -324,7 +476,7 @@ const HomeView = () => {
                                                             }}
                                                         >
                                                             <motion.span className="snapshot-num" layoutId={prefix ? `${prefix}-num` : undefined} style={{ fontSize: '4.5rem', fontWeight: '900', zIndex: 1, textShadow: 'var(--accent-glow-strong)', lineHeight: 1, fontFamily: 'monospace' }}>
-                                                                {prefix ? item.num : <AnimatedCounter value={item.num} />}
+                                                                <AnimatedCounter value={item.num} />
                                                             </motion.span>
                                                             <div style={{ marginTop: '1.5rem', display: 'flex', alignItems: 'center', gap: '10px', zIndex: 1 }}>
                                                                 <span className="snapshot-bracket">[</span>
@@ -538,9 +690,6 @@ const HomeView = () => {
                                                             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                                                     <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--accent-primary)', fontFamily: 'monospace' }}>{item.year}</span>
-                                                                    <span style={{ fontSize: '0.7rem', padding: '0.2rem 0.5rem', border: `1px solid ${item.status === 'COMPLETED' ? 'var(--accent-primary)' : 'var(--border-strong)'}`, color: item.status === 'COMPLETED' ? 'var(--accent-primary)' : 'var(--text-secondary)', borderRadius: '4px', fontFamily: 'monospace' }}>
-                                                                        {item.status}
-                                                                    </span>
                                                                 </div>
                                                                 <h3 style={{ fontSize: '1.2rem', color: 'var(--text-primary)', letterSpacing: '1px' }}>{item.event}</h3>
                                                                 <p style={{ color: 'var(--text-secondary)', lineHeight: 1.5 }}>{item.desc}</p>
@@ -561,6 +710,12 @@ const HomeView = () => {
                                         <p style={{ fontSize: '1.2rem', opacity: 0.5 }}>This module is currently under construction.</p>
                                     </div>
                                 </div>
+                            ) : activeSection === 'metrics' ? (
+                                <CorporateMetricsView metrics={metrics} />
+                            ) : activeSection === 'global' ? (
+                                <GlobalFootprintView />
+                            ) : activeSection === 'brands' ? (
+                                <BrandsView onClose={() => {}} />
                             ) : (
                                 <div style={{ flex: 1, color: 'var(--text-secondary)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                     {/* Content placeholder */}
