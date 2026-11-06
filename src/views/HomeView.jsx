@@ -88,6 +88,12 @@ const HomeView = () => {
     useEffect(() => {
         const handleReset = () => {
             setActiveSection(null);
+            setShowHistory(false);
+            setShowPartners(false);
+            setShowLocations(false);
+            setShowBrands(false);
+            setActiveIndustry('All');
+            setActiveRole('All');
             setTransitionKey(prev => prev + 1);
         };
         window.addEventListener('reset-home-view', handleReset);
@@ -127,7 +133,7 @@ const HomeView = () => {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '5rem' }}>
             {/* Hero Section */}
-            <section style={{ 
+            <section className="home-hero" style={{
                 minHeight: '80vh', 
                 display: 'flex', 
                 flexDirection: isExpanded ? 'row' : 'column', 
@@ -189,6 +195,7 @@ const HomeView = () => {
                 {/* Left Side (or main container): Header & Navigation */}
                 <motion.div 
                     layout
+                    className="home-navigation"
                     style={{ 
                         display: 'flex', 
                         flexDirection: isExpanded ? 'column' : 'row', 
@@ -206,6 +213,7 @@ const HomeView = () => {
                     <AnimatePresence>
                         <motion.div
                             layout
+                            className="home-heading"
                             style={{
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -312,6 +320,7 @@ const HomeView = () => {
                     <AnimatePresence>
                         {!isExpanded && (
                             <motion.div
+                                className="home-divider"
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: '450px' }}
                                 exit={{ opacity: 0, height: 0 }}
@@ -345,6 +354,7 @@ const HomeView = () => {
                     {/* Navigation Menu (Right when !isExpanded) */}
                     <motion.div 
                         layout
+                        className="home-menu"
                         style={{ 
                             display: 'flex', 
                             flexDirection: 'column', 
@@ -421,14 +431,15 @@ const HomeView = () => {
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: 50 }}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            style={{ flex: 1, zIndex: 10, padding: '1rem 0 0 0', minHeight: '500px', display: 'flex', flexDirection: 'column' }}
+                            className="home-content"
+                            style={{ minWidth: 0, flex: 1, zIndex: 10, padding: '1rem 0 0 0', minHeight: '500px', display: 'flex', flexDirection: 'column' }}
                         >
                             {activeSection === 'snapshot' ? (
                                 <motion.div 
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.6, delay: 0.4 }}
-                                    style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', gap: '5rem', padding: '0 2rem 2rem' }}
+                                    className="snapshot-content" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', gap: '5rem', padding: '0 2rem 2rem' }}
                                 >
                                     <AnimatePresence mode="wait">
                                         {!showHistory && !showPartners && !showLocations && !showBrands ? (
@@ -441,7 +452,7 @@ const HomeView = () => {
                                                 style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem', width: '100%' }}
                                             >
 
-                                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem', width: '100%', maxWidth: '1100px', margin: '0 auto' }}>
+                                                <div className="snapshot-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem', width: '100%', maxWidth: '1100px', margin: '0 auto' }}>
                                                     {[
                                                         { num: '26', label: 'Years of Experience', sysId: '0x8F22A', isExp: true },
                                                         { num: '986', label: 'Global Partners', sysId: '0xB719C' },
@@ -487,7 +498,7 @@ const HomeView = () => {
                                                     )})}
                                                 </div>
                                                 
-                                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2rem', width: '100%', maxWidth: '1100px', margin: '1rem auto 0' }}>
+                                                <div className="listing-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2rem', width: '100%', maxWidth: '1100px', margin: '1rem auto 0' }}>
                                                     {[
                                                         { year: '2017', desc: 'IPO in Taiwan', code: 'TW.8499', align: 'left' },
                                                         { year: '2022', desc: 'IPO in Shenzhen', code: 'SZ.301389', align: 'right' }
@@ -561,7 +572,7 @@ const HomeView = () => {
                                                 </motion.div>
 
                                                 {/* Main Layout Area */}
-                                                <div style={{ display: 'flex', gap: '2rem', flex: 1, overflow: 'hidden' }}>
+                                                <div className="partners-layout" style={{ display: 'flex', gap: '2rem', flex: 1, overflow: 'hidden' }}>
                                                     
                                                     {/* Left Area: Map & Grid */}
                                                     <div style={{ position: 'relative', flex: 1, padding: '0 0 1rem 0' }}>
@@ -599,7 +610,7 @@ const HomeView = () => {
                                                     </div>
 
                                                     {/* Right Area: Vertical Industry Filter */}
-                                                    <div style={{ width: '220px', display: 'flex', flexDirection: 'column', gap: '1rem', overflowY: 'auto', paddingRight: '10px', zIndex: 10 }} className="custom-scrollbar">
+                                                    <div className="industry-filters custom-scrollbar" style={{ width: '220px', display: 'flex', flexDirection: 'column', gap: '1rem', overflowY: 'auto', paddingRight: '10px', zIndex: 10 }}>
                                                         <span style={{ fontSize: '0.75rem', color: 'var(--text-primary)', fontFamily: 'monospace', letterSpacing: '1px', textTransform: 'uppercase' }}>Industry</span>
                                                         {INDUSTRY_DATA.map(ind => (
                                                             <motion.div
@@ -670,7 +681,7 @@ const HomeView = () => {
                                                 </motion.div>
 
                                                 {/* Timeline Content */}
-                                                <div style={{ position: 'relative', paddingLeft: '200px' }}>
+                                                <div className="history-timeline" style={{ position: 'relative', paddingLeft: '200px' }}>
                                                     <div style={{ position: 'absolute', left: '160px', top: '10px', bottom: '10px', width: '2px', background: 'linear-gradient(to bottom, var(--accent-primary), transparent)' }} />
                                                     {historyData.map((item, index) => (
                                                         <motion.div 
@@ -715,7 +726,7 @@ const HomeView = () => {
                             ) : activeSection === 'global' ? (
                                 <GlobalFootprintView />
                             ) : activeSection === 'brands' ? (
-                                <BrandsView onClose={() => {}} />
+                                <BrandsView onClose={() => setActiveSection(null)} />
                             ) : (
                                 <div style={{ flex: 1, color: 'var(--text-secondary)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                     {/* Content placeholder */}

@@ -8,7 +8,7 @@ import './styles/globals.css';
 const Layout = ({ children }) => {
     const [isDarkMode, setIsDarkMode] = React.useState(() => {
         const saved = localStorage.getItem('theme_isDarkMode');
-        return saved !== null ? JSON.parse(saved) : true;
+        return saved !== 'false';
     });
 
     React.useEffect(() => {
@@ -21,7 +21,7 @@ const Layout = ({ children }) => {
     }, [isDarkMode]);
     return (
         <div className="app-container">
-            <nav className="glass-panel" style={{ position: 'fixed', top: 0, width: '100%', zIndex: 50, padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderRadius: 0, border: 'none', background: 'var(--bg-glass-heavy)', borderBottom: '1px solid var(--border-subtle)', transition: 'background 0.4s ease, border-color 0.4s ease' }}>
+            <nav className="glass-panel app-nav" style={{ position: 'fixed', top: 0, width: '100%', zIndex: 50, padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderRadius: 0, border: 'none', background: 'var(--bg-glass-heavy)', borderBottom: '1px solid var(--border-subtle)', transition: 'background 0.4s ease, border-color 0.4s ease' }}>
                 <Link to="/" onClick={() => {
                     window.dispatchEvent(new Event('reset-home-view'));
                     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -38,20 +38,20 @@ const Layout = ({ children }) => {
                         }} 
                     />
                 </Link>
-                <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+                <div className="nav-actions" style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
                     <button 
                         onClick={() => setIsDarkMode(!isDarkMode)}
-                        style={{ background: 'transparent', border: 'none', color: 'var(--brand-secondary)', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '5px' }}
+                        style={{ background: 'transparent', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '5px' }}
                         title="Toggle Light/Dark Mode"
                     >
                         {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
                     </button>
                     <div style={{ display: 'flex', gap: '0.8rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-                        <span style={{ cursor: 'pointer', color: 'var(--text-primary)', fontWeight: 500 }}>EN</span>
+                        <span aria-current="true" style={{ color: 'var(--text-primary)', fontWeight: 500 }}>EN</span>
                         <span>|</span>
-                        <span style={{ cursor: 'pointer', transition: 'color 0.3s' }}>繁體</span>
+                        <button className="language-unavailable" disabled title="Coming soon">繁體</button>
                         <span>|</span>
-                        <span style={{ cursor: 'pointer', transition: 'color 0.3s' }}>简体</span>
+                        <button className="language-unavailable" disabled title="Coming soon">简体</button>
                     </div>
                 </div>
             </nav>

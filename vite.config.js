@@ -7,8 +7,5 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5666
-  },
-  optimizeDeps: {
-    include: ['react-simple-maps', 'prop-types']
   }
 })
